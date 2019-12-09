@@ -136,10 +136,10 @@ export default {
   justify-content: center;
 }
 .swipeLeft {
-  left: 35px;
+  left: 100px;
 }
 .swipeRight {
-  right: 35px;
+  right: 100px;
 }
 .homwSwipeBtn > img {
   width: 16px;

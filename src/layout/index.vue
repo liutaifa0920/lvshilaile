@@ -28,6 +28,7 @@
         </div>
       </div>
     </div>
+    <div class="layoutTopBlick"></div>
     <router-view />
     <div class="layoutFooter">
       <div class="layoutFooterTop">
@@ -75,13 +76,17 @@ export default {
 }
 /* ---------------------- Nav ------------------- */
 .layoutTitle {
-  width: 100%;
+  width: 100vw;
   height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
   background-color: #2971de;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1000;
 }
 /* logo */
 .layoutLogo {
@@ -144,7 +149,13 @@ export default {
   background-color: white;
 }
 
-/* Footer */
+.layoutTopBlick {
+  height: 60px;
+  width: 100%;
+  position: relative;
+}
+
+/* ----------------------------------- Footer ---------------------------- */
 .layoutFooter {
   width: 1200px;
   height: 365px;
@@ -203,11 +214,11 @@ export default {
 .layoutRightFix {
   position: fixed;
   right: 0px;
-  top: 0px;
+  top: 60px;
   width: 70px;
   height: 800px;
-  background-color: #2971de;
+  background-color: #438d59;
   z-index: 1000;
-  display: none;
+  /* display: none; */
 }
 </style>
