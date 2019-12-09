@@ -217,8 +217,9 @@ export default {
   top: 60px;
   width: 70px;
   height: 800px;
-  background-color: #438d59;
+  background-color: white;
   z-index: 1000;
+  box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
   /* display: none; */
 }
 </style>
