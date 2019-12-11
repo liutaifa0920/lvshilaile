@@ -215,7 +215,7 @@ export default {
   right: 0;
   margin: auto;
 }
-.homeTeam .el-carousel__button{
+.homeTeam .el-carousel__button {
   background-color: #2971de;
 }
 </style>

@@ -23,8 +23,8 @@
         <img class="layoutLoginTip" src="img/layout/铃铛.png" alt="消息通知" />
         <div class="layoutLoginBlock">
           <p>登录</p>
-          <div class="layoutLoginMid"></div>
-          <p>注册</p>
+          <!-- <div class="layoutLoginMid"></div>
+          <p>注册</p> -->
         </div>
       </div>
     </div>
@@ -136,7 +136,7 @@ export default {
   font-size: 14px;
   height: 16px;
   line-height: 16px;
-  width: 86px;
+  width: 28px;
   display: flex;
   justify-content: space-around;
 }

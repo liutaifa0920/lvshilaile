@@ -20,9 +20,40 @@ const routes = [
         path: "home",
         name: "Home",
         component: () => import("@/views/home/index.vue")
+      },
+      // 免费咨询
+      {
+        path: "/freeConsult",
+        name: "freeConsult",
+        component: () => import("@/views/home/other/freeConsult.vue")
+      },
+      // 全面咨询
+      {
+        path: "/allConsult",
+        name: "allConsult",
+        component: () => import("@/views/home/other/allConsult.vue")
+      },
+      // 文章详情
+      {
+        path: "/articleInfo",
+        name: "articleInfo",
+        component: () => import("@/views/home/other/articleInfo.vue")
+      },
+      // 企业信息
+      {
+        path: "/businessInfo",
+        name: "businessInfo",
+        component: () => import("@/views/home/other/businessInfo.vue")
+      },
+      // 我的资料
+      {
+        path: "/userInfo",
+        name: "userInfo",
+        component: () => import("@/views/home/other/userInfo.vue")
       }
     ]
   }
+
 ];
 
 const router = new VueRouter({
