@@ -50,10 +50,21 @@ const routes = [
         path: "/userInfo",
         name: "userInfo",
         component: () => import("@/views/home/other/userInfo.vue")
+      },
+      // 法律咨询
+      {
+        path: "/legalAdvice",
+        name: "legalAdvice",
+        component: () => import("@/views/home/other/legalAdvice.vue")
+      },
+      // 关于我们
+      {
+        path: "/about",
+        name: "about",
+        component: () => import("@/views/about/index.vue")
       }
     ]
   }
-
 ];
 
 const router = new VueRouter({
