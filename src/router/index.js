@@ -62,6 +62,12 @@ const routes = [
         path: "/about",
         name: "about",
         component: () => import("@/views/about/index.vue")
+      },
+      // 关于我们
+      {
+        path: "/serviceInfo",
+        name: "serviceInfo",
+        component: () => import("@/views/home/other/serviceInfo.vue")
       }
     ]
   }

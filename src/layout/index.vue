@@ -24,7 +24,7 @@
         <div class="layoutLoginBlock">
           <p>登录</p>
           <!-- <div class="layoutLoginMid"></div>
-          <p>注册</p> -->
+          <p>注册</p>-->
         </div>
       </div>
     </div>
@@ -57,7 +57,31 @@
       </div>
     </div>
     <!-- rightFixed -->
-    <div class="layoutRightFix"></div>
+    <div class="layoutRightFix">
+      <div class="rightItem">
+        <img src="img/layout/订单.png" alt />
+        <p>订单</p>
+      </div>
+      <div class="rightItem">
+        <img src="img/layout/电话.png" alt />
+        <p>致电<br>咨询</p>
+      </div>
+      <div class="rightItem">
+        <img src="img/layout/1免费咨询.png" alt />
+        <p>免费<br>咨询</p>
+      </div>
+      <div class="rightItem">
+        <img src="img/layout/消息.png" alt />
+        <p>全面<br>咨询</p>
+      </div>
+      <div class="rightItem">
+        <img src="img/layout/二维码.png" alt />
+        <p>小程序</p>
+      </div>
+      <div class="toTop">
+        <img src="img/layout/回到顶部.png" alt />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -216,10 +240,51 @@ export default {
   right: 0px;
   top: 60px;
   width: 70px;
-  height: 800px;
-  background-color: white;
+  height: 700px;
+  background-color: white;  
   z-index: 1000;
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
   /* display: none; */
+}
+
+.rightItem {
+  width: 70px;
+  height: 120px;
+  border-bottom: 1px solid #e1e3e6;
+  color: #788084;
+  padding: 20px 0;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+}
+.rightItem:nth-child(1){
+  height: 100px;
+  padding-top: 30px !important;
+}
+.rightItem:nth-child(5){
+  height: 110px;
+  padding-top: 30px !important;
+}
+.rightItem:last-child {
+  border: 0;
+}
+.rightItem > img {
+  width: 30px;
+  height: 26px;
+}
+.rightItem > p {
+  width: 100%;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.toTop {
+  width: 70px;
+  height: 26px;
+  padding-top: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+.toTop > img{
+  width: 30px;
 }
 </style>
