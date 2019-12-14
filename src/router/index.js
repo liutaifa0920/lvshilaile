@@ -33,6 +33,13 @@ const routes = [
         name: "allConsult",
         component: () => import("@/views/home/other/allConsult.vue")
       },
+      // 咨询
+      {
+        path: "/consultList",
+        name: "consultList",
+        component: () => import("@/views/home/other/consultList.vue")
+      },
+
       // 文章详情
       {
         path: "/articleInfo",
@@ -45,17 +52,41 @@ const routes = [
         name: "businessInfo",
         component: () => import("@/views/home/other/businessInfo.vue")
       },
+      // input企业信息
+      {
+        path: "/setBusinessInfo",
+        name: "setBusinessInfo",
+        component: () => import("@/views/home/other/setBusinessInfo.vue")
+      },
       // 我的资料
       {
         path: "/userInfo",
         name: "userInfo",
         component: () => import("@/views/home/other/userInfo.vue")
       },
+      // 我的消息
+      {
+        path: "/myInfo",
+        name: "myInfo",
+        component: () => import("@/views/home/other/myInfo.vue")
+      },
+      // 消息详情
+      {
+        path: "/myInfoCon",
+        name: "myInfoCon",
+        component: () => import("@/views/home/other/myInfoCon.vue")
+      },
       // 法律咨询
       {
         path: "/legalAdvice",
         name: "legalAdvice",
         component: () => import("@/views/home/other/legalAdvice.vue")
+      },
+      // 订单
+      {
+        path: "/order",
+        name: "order",
+        component: () => import("@/views/home/other/order.vue")
       },
       // 关于我们
       {

@@ -64,7 +64,6 @@ export default {
 .articleInfo {
   width: 1200px;
   margin: 0 auto;
-  border: solid 1px #eeeeee;
   margin-bottom: 121px;
 }
 .topBread {
@@ -74,6 +73,7 @@ export default {
 
 .articleInfoCon {
   padding: 50px 100px;
+  border: solid 1px #eeeeee;
   width: 100%;
   box-sizing: border-box;
 }

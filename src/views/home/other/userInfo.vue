@@ -13,16 +13,16 @@
           <p>张三TOP</p>
         </div>
         <div class="contentLeftB">
-          <p class="contentLeftBItem">
+          <p class="contentLeftBItem" @click="linketoInfo(1)">
             <img src="img/home/PC信息.png" /> 企业信息
           </p>
-          <p class="contentLeftBItem isAction">
+          <p class="contentLeftBItem isAction" @click="linketoInfo(2)">
             <img src="img/home/PC资料 (1).png" /> 我的资料
           </p>
-          <p class="contentLeftBItem">
+          <p class="contentLeftBItem" @click="linketoInfo(3)">
             <img src="img/home/消息.png" /> 我的消息
           </p>
-          <p class="contentLeftBItem">
+          <p class="contentLeftBItem" @click="linketoInfo(4)">
             <img src="img/home/PC注册会员.png" /> 注册会员
           </p>
         </div>
@@ -62,7 +62,21 @@ export default {
     };
   },
   mounted() {},
-  methods: {}
+  methods: {
+    linketoInfo(i) {
+      if (i == 1) {
+        this.$router.push({
+          path: "/businessInfo"
+        });
+      } else if (i == 2) {
+      } else if (i == 3) {
+        this.$router.push({
+          path: "/myInfo"
+        });
+      } else if (i == 4) {
+      }
+    }
+  }
 };
 </script>
 <style>
