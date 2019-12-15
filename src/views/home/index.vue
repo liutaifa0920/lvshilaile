@@ -3,8 +3,8 @@
     <!-- swipe -->
     <div class="homeSwipe">
       <el-carousel ref="carousel" indicator-position="none" arrow="never">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <img class="homeSwipeImg" src="img/home/1512719105857205.png" alt="swipe" />
+        <el-carousel-item v-for="(item, i) in swipeList" :key="i">
+          <img class="homeSwipeImg" :src="item.image" alt="swipe" />
         </el-carousel-item>
       </el-carousel>
       <div class="homwSwipeBtn swipeLeft" @click="swipePrev">
@@ -16,10 +16,10 @@
     </div>
     <!-- SwipeBottom -->
     <div class="homeSwipeBottom">
-      <div class="homeSwipeBottomItem" v-for="(item, i) in 4" :key="i">
-        <img src="img/home/club-2492011_960_720.jpg" alt />
-        <p class="homeSwipeBottomItemP1">合同复审</p>
-        <p class="homeSwipeBottomItemP2">合同复审</p>
+      <div class="homeSwipeBottomItem" v-for="(item, i) in swipeBottomList" :key="i">
+        <img :src="item.image" alt />
+        <p class="homeSwipeBottomItemP1">{{item.name}}</p>
+        <p class="homeSwipeBottomItemP2">{{item.name}}</p>
       </div>
     </div>
     <!-- Service -->
@@ -29,54 +29,49 @@
       <div class="homeUnit">
         <div class="homeUnitItem">
           <div class="homeUnitItemLeftT">
-            <img src="img/home/工商财税.png" alt />
-            <p>工商财税</p>
+            <img :src="serviceList[0].img" alt />
+            <p>{{serviceList[0].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in 3" :key="i">
-                <span>商标注册</span>
-                <span>商业特许经营备案</span>
+              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+                <span>{{item.twoname}}</span>
               </div>
             </div>
           </div>
           <div class="homeUnitItemLeftB">
-            <img src="img/home/2经营许可.png" alt />
-            <p>经营许可</p>
+            <img :src="serviceList[1].img" alt />
+            <p>{{serviceList[1].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in 3" :key="i">
-                <span>商标注册</span>
-                <span>商业特许经营备案</span>
+              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+                <span>{{item.twoname}}</span>
               </div>
             </div>
           </div>
         </div>
         <div class="homeUnitItem">
-          <img src="img/home/知识产权.png" alt />
-          <p>知识产权</p>
+          <img :src="serviceList[3].img" alt />
+          <p>{{serviceList[3].name}}</p>
           <div class="homeUnitItemCon">
-            <div class="homeUnitItemConList" v-for="(item, i) in 3" :key="i">
-              <span>商标注册</span>
-              <span>商业特许经营备案</span>
+            <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+              <span>{{item.twoname}}</span>
             </div>
           </div>
         </div>
         <div class="homeUnitItem">
           <div class="homeUnitItemRigT">
-            <img src="img/home/2企业法务.png" alt />
-            <p>企业法务</p>
+            <img :src="serviceList[2].img" alt />
+            <p>{{serviceList[2].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in 3" :key="i">
-                <span>商标注册</span>
-                <span>商业特许经营备案</span>
+              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+                <span>{{item.twoname}}</span>
               </div>
             </div>
           </div>
           <div class="homeUnitItemRigB">
-            <img src="img/home/家庭法务.png" alt />
-            <p>家庭法务</p>
+            <img :src="serviceList[4].img" alt />
+            <p>{{serviceList[4].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in 3" :key="i">
-                <span>商标注册</span>
-                <span>商业特许经营备案</span>
+              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+                <span>{{item.twoname}}</span>
               </div>
             </div>
           </div>
@@ -89,18 +84,18 @@
       <div class="homeItemTitLine"></div>
 
       <el-carousel ref="carouselTeam" indicator-position="outside" arrow="never">
-        <el-carousel-item v-for="item in 4" :key="item">
+        <el-carousel-item v-for="(item, i) in teamList.count" :key="i">
           <div class="homeTeamBox">
-            <div class="homeTeamBoxItem" v-for="(item,i) in 3" :key="i">
-              <img src="img/home/1512719105857205.png" alt />
-              <p class="homeTeamBoxItemCName">{{"杜廷玉"}} {{"律师"}}</p>
+            <div class="homeTeamBoxItem" v-for="(items,index) in teamList.result" :key="index">
+              <img :src="items.image" alt />
+              <p class="homeTeamBoxItemCName">{{items.name}} 律师</p>
               <div class="homeTeamBoxItemC1">
                 <p>毕业院校</p>
-                <p>北京大学法学院</p>
+                <p>{{items.school}}</p>
               </div>
               <div class="homeTeamBoxItemC2">
                 <p>擅长领域</p>
-                <p>婚姻家庭纠纷、遗嘱继承、合同纠纷、交通事故等。</p>
+                <p>{{items.server_two_name}}</p>
               </div>
             </div>
           </div>
@@ -119,13 +114,10 @@
             <img class="homeConsultationItemTB" src="img/home/1免费咨询.png" alt />
           </div>
           <div class="homeConsultationItemC">
-            <p class="homeConsultationItemCQ">您好，我想注册公司，请问需要准备什么资料？具体都有哪些流程？有没有需要特别注意的地方？</p>
+            <p class="homeConsultationItemCQ">{{consultationList.simple.problem}}</p>
             <p class="homeConsultationItemCR">
               <img src="img/home/律师费计算.png" />
-              注册公司准备材料如下所示：
-              1、全体投资人的身份证
-              2、法人身份证、监事身份证(或经理)
-              3、注册地址的租赁协议、房产证复印件并由产权所有人盖章...
+              {{consultationList.simple.reply}}
             </p>
           </div>
         </div>
@@ -133,31 +125,28 @@
           <div class="homeConsultationItemT Red">
             <p>全面咨询</p>
             <img class="homeConsultationItemTMore" src="img/home/更多.png" alt />
-            <img class="homeConsultationItemTB" src="img/home/club-2492011_960_720.jpg" alt />
+            <img class="homeConsultationItemTB" src="img/home/1全面咨询.png" alt />
           </div>
           <div class="homeConsultationItemC">
-            <p class="homeConsultationItemCQ">您好，我想注册公司，请问需要准备什么资料？具体都有哪些流程？有没有需要特别注意的地方？</p>
+            <p class="homeConsultationItemCQ">{{consultationList.simpleall.problem}}</p>
             <p class="homeConsultationItemCR">
               <img src="img/home/律师费计算.png" />
-              注册公司准备材料如下所示：
-              1、全体投资人的身份证
-              2、法人身份证、监事身份证(或经理)
-              3、注册地址的租赁协议、房产证复印件并由产权所有人盖章...
+              {{consultationList.simpleall.reply}}
             </p>
           </div>
         </div>
       </div>
     </div>
     <div class="homeNews">
-      <p class="homeItemTit">Consultation 咨询案例</p>
+      <p class="homeItemTit">News 新闻中心</p>
       <div class="homeItemTitLine"></div>
       <div class="homeNewsBox">
-        <div class="homeNewsItem" v-for="(item,i) in 3" :key="i">
-          <img class="homeNewsItemLeft" src="img/home/club-2492011_960_720.jpg" alt />
+        <div class="homeNewsItem" v-for="(item,i) in articleList" :key="i">
+          <img class="homeNewsItemLeft" :src="item.image" alt />
           <div class="homeNewsItemRight">
-            <p>花数万元报班孩子仍考倒数第一，家长怒告培训班！法院这样判</p>
-            <p>为了提高孩子的成绩，不少家长会选择给孩子报培训班。但报了班后，就一定有效果吗？如果适得其反，报班的钱能要回吗？</p>
-            <p>2019-10-11</p>
+            <p>{{item.title}}</p>
+            <p>{{item.abstract}}</p>
+            <p>{{item.add_time}}</p>
           </div>
         </div>
         <div class="homeNewsMoreBtn">查看更多</div>
@@ -167,11 +156,64 @@
 </template>
 
 <script>
+import { homeParentClass } from "@/api/api";
 export default {
   data() {
-    return {};
+    return {
+      swipeList: [],
+      swipeBottomList: [],
+      serviceList: [
+        {
+          img: "",
+          name: ""
+        },
+        {
+          img: "",
+          name: ""
+        },
+        {
+          img: "",
+          name: ""
+        },
+        {
+          img: "",
+          name: ""
+        },
+        {
+          img: "",
+          name: ""
+        }
+      ],
+      teamList: {},
+      consultationList: {
+        simple: {
+          problem: "",
+          reply: ""
+        },
+        simpleall: {
+          problem: "",
+          reply: ""
+        }
+      },
+      articleList: []
+    };
+  },
+  mounted() {
+    this.queryHomeInfo();
   },
   methods: {
+    // 请求首页信息
+    queryHomeInfo() {
+      homeParentClass().then(res => {
+        console.log(res.data);
+        this.swipeList = res.data.broadcast;
+        this.swipeBottomList = res.data.servertwo;
+        this.serviceList = res.data.serverone;
+        this.teamList = res.data.team;
+        this.consultationList = res.data.simple;
+        this.articleList = res.data.article;
+      });
+    },
     // 轮播上下页
     swipePrev() {
       this.$refs.carousel.prev();
@@ -431,6 +473,8 @@ export default {
   z-index: 500;
   transition: 0.4s;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 .homeUnitItemCon:hover {
   opacity: 1;
@@ -598,7 +642,7 @@ export default {
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
 }
 .homeNewsItem {
-  width: 100%;
+  width: 1080px;
   height: 244px;
   padding: 40px 0;
   margin: 0 60px;

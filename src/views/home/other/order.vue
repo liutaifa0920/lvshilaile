@@ -72,7 +72,8 @@ export default {
       tabPaySet: 1
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     titleClick(i) {
       this.currentType = i;
@@ -218,19 +219,19 @@ export default {
   color: #788084;
 }
 
-.typeBig{
-    padding: 7px 15px;
-    border: 1px solid white;
-	border-radius: 5px;
-    box-sizing: border-box;
+.typeBig {
+  padding: 7px 15px;
+  border: 1px solid white;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
-.isBlue{
-    color: #2971de;
-    border:1px solid #2971de;
+.isBlue {
+  color: #2971de;
+  border: 1px solid #2971de;
 }
-.isGary{
-    color: #788084;
-    border:1px solid #788084;
+.isGary {
+  color: #788084;
+  border: 1px solid #788084;
 }
 
 /* page */

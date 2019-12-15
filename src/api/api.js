@@ -12,3 +12,12 @@ export function test(data) {
     data
   });
 }
+
+// ---------------------- Home --------------------------- //
+export function homeParentClass(data) {
+  return request({
+    url: "/pc/home/indexpage",
+    method: "post",
+    data
+  });
+}
