@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="top">
-      <img src="img/layout/logoBlue.png" alt />
+      <img @click="toHome" src="img/layout/logoBlue.png" alt />
     </div>
     <div class="content">
       <img src="img/login/ren.png" alt />
@@ -36,6 +36,13 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    toHome() {
+      this.$router.push({
+        path: "/"
+      });
+    }
   }
 };
 </script>
@@ -53,6 +60,7 @@ export default {
 .top > img {
   width: 122px;
   height: 40px;
+  cursor: pointer;
 }
 .content {
   width: 100%;

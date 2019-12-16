@@ -1,7 +1,7 @@
 <template>
   <div class="defaut-layout">
     <div class="layoutTitle">
-      <img class="layoutLogo" src="img/layout/logoWhite.png" alt="律狮来了" />
+      <img @click="toHome" class="layoutLogo" src="img/layout/logoWhite.png" alt="律狮来了" />
       <ul class="layoutNav">
         <li @click="layoutNavClick(1)">
           <p>首页</p>
@@ -20,9 +20,42 @@
         </li>
       </ul>
       <div class="layoutLoginBox">
-        <img class="layoutLoginTip" src="img/layout/铃铛.png" alt="消息通知" />
-        <div class="layoutLoginBlock">
-          <p>登录</p>
+        <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
+          <img src="img/layout/铃铛.png" alt="消息通知" />
+          <div v-show="userTipMove" class="tipList">
+            <div class="tipListItem" v-for="(item , i) in 3" :key="i" @click="linTomyInfoCon(item)">
+              <p>{{"杜廷玉"}} 律师 回复了您的提问</p>
+              <p>{{"2019-10-11 12:30:29"}}</p>
+            </div>
+            <div class="moreTip" @click="linTomyInfo(item)">
+              <p>查看全部 ></p>
+            </div>
+          </div>
+        </div>
+        <div class="layoutLoginBlock" @mouseenter="userImgMoveEnter" @mouseleave="userImgMoveLeave">
+          <p @click="toLogin">登录</p>
+          <div v-show="userInfoMove && isLogin" class="infoList">
+            <div class="userInfo">
+              <img src alt />
+              <p>张三Top</p>
+            </div>
+            <div class="itemListItem">
+              <img src="img/home/PC信息.png" alt />
+              <p>企业信息</p>
+            </div>
+            <div class="itemListItem">
+              <img src="img/home/PC资料.png" alt />
+              <p>我的资料</p>
+            </div>
+            <div class="itemListItem">
+              <img src="img/home/消息.png" alt />
+              <p>我的消息</p>
+            </div>
+            <div class="itemListItem">
+              <img src="img/home/PC注册会员.png" alt />
+              <p>注册会员</p>
+            </div>
+          </div>
           <!-- <div class="layoutLoginMid"></div>
           <p>注册</p>-->
         </div>
@@ -64,15 +97,24 @@
       </div>
       <div class="rightItem">
         <img src="img/layout/电话.png" alt />
-        <p>致电<br>咨询</p>
+        <p>
+          致电
+          <br />咨询
+        </p>
       </div>
       <div class="rightItem">
         <img src="img/layout/1免费咨询.png" alt />
-        <p>免费<br>咨询</p>
+        <p>
+          免费
+          <br />咨询
+        </p>
       </div>
       <div class="rightItem">
         <img src="img/layout/消息.png" alt />
-        <p>全面<br>咨询</p>
+        <p>
+          全面
+          <br />咨询
+        </p>
       </div>
       <div class="rightItem">
         <img src="img/layout/二维码.png" alt />
@@ -89,9 +131,61 @@
 export default {
   name: "defaut-layout",
   data() {
-    return {};
+    return {
+      userTipMove: false,
+      userInfoMove: false,
+      isLogin: false
+    };
   },
-  methods: {}
+  methods: {
+    userTipMoveEnter() {
+      this.userTipMove = true;
+    },
+    userTipMoveLeave() {
+      this.userTipMove = false;
+    },
+    userImgMoveEnter() {
+      this.userInfoMove = true;
+    },
+    userImgMoveLeave() {
+      this.userInfoMove = false;
+    },
+    toHome() {
+      this.$router.push({
+        path: "/"
+      });
+    },
+    layoutNavClick(i) {
+      if (i == 1) {
+        this.$router.push({
+          path: "/"
+        });
+      } else if (i == 2) {
+      } else if (i == 3) {
+      } else if (i == 4) {
+      } else if (i == 5) {
+        
+        this.$router.push({
+          path: "/about"
+        });
+      }
+    },
+    linTomyInfoCon() {
+      this.$router.push({
+        path: "/myInfoCon"
+      });
+    },
+    linTomyInfo() {
+      this.$router.push({
+        path: "/myInfo"
+      });
+    },
+    toLogin() {
+      this.$router.push({
+        path: "/login"
+      });
+    }
+  }
 };
 </script>
 <style scoped>
@@ -117,6 +211,7 @@ export default {
   width: 123px;
   height: 40px;
   margin-left: 50px;
+  cursor: pointer;
 }
 /* topNav */
 .layoutNav {
@@ -143,29 +238,139 @@ export default {
 }
 /* topRight */
 .layoutLoginBox {
-  width: 125px;
+  width: 175px;
   margin-right: 51px;
   display: flex;
   align-items: center;
 }
 /* topTip */
 .layoutLoginTip {
-  width: 18px;
-  height: 20px;
+  width: 68px;
+  height: 60px;
+  padding-left: 50px;
+  box-sizing: border-box;
   margin-right: 23px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+.layoutLoginTip > img {
+  width: 18px;
+  height: 20px;
+}
+.tipList {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  width: 240px;
+  height: 279px;
+  padding-top: 29px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
+  border-radius: 5px;
+}
+.tipListItem {
+  width: 240px;
+  height: 60px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eeeeee;
+  cursor: pointer;
+}
+.tipListItem:nth-child(3) {
+  margin-bottom: 0px;
+}
+.tipListItem > p:nth-child(1) {
+  text-align: left;
+  font-size: 14px;
+  color: #263238;
+  margin-bottom: 14px !important;
+  padding: 0 22px;
+  box-sizing: border-box;
+}
+.tipListItem > p:nth-child(2) {
+  text-align: left;
+  font-size: 12px;
+  color: #788084;
+  padding: 0 22px;
+  box-sizing: border-box;
+}
+.moreTip {
+  height: 32px;
+  width: 240px;
+  background-color: #2971de20;
+  border-radius: 0px 0px 5px 5px;
+  cursor: pointer;
+}
+.moreTip > p {
+  line-height: 32px;
+  font-size: 12px;
+  text-align: center;
+  color: #263238;
 }
 /* topLogin */
 .layoutLoginBlock {
   font-size: 14px;
-  height: 16px;
-  line-height: 16px;
+  height: 60px;
   width: 28px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  position: relative;
 }
 .layoutLoginBlock > p {
   cursor: pointer;
+}
+.infoList {
+  position: absolute;
+  top: 55px;
+  right: 0px;
+  width: 150px;
+  background-color: white;
+  z-index: 500;
+  height: 180px;
+  box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
+  border-radius: 5px 5px 0px 0px;
+}
+.userInfo {
+  width: 150px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background-image: linear-gradient(82deg, #43a7f5 0%, #8e66f3 100%),
+    linear-gradient(#ffffff, #ffffff);
+  border-radius: 5px 5px 0px 0px;
+  color: white;
+  font-size: 14px;
+}
+.userInfo > img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+.itemListItem {
+  width: 150px;
+  height: 30px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  color: #788084;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  cursor: pointer;
+}
+.itemListItem > img {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
 }
 .layoutLoginMid {
   height: 16px;
@@ -241,7 +446,7 @@ export default {
   top: 60px;
   width: 70px;
   height: 700px;
-  background-color: white;  
+  background-color: white;
   z-index: 1000;
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
   /* display: none; */
@@ -257,11 +462,11 @@ export default {
   text-align: center;
   cursor: pointer;
 }
-.rightItem:nth-child(1){
+.rightItem:nth-child(1) {
   height: 100px;
   padding-top: 30px !important;
 }
-.rightItem:nth-child(5){
+.rightItem:nth-child(5) {
   height: 110px;
   padding-top: 30px !important;
 }
@@ -284,7 +489,7 @@ export default {
   text-align: center;
   cursor: pointer;
 }
-.toTop > img{
+.toTop > img {
   width: 30px;
 }
 </style>
