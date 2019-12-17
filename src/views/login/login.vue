@@ -6,7 +6,8 @@
     <div class="content">
       <img src="img/login/ren.png" alt />
       <div class="contentRight">
-        <img src="img/login/账号登录.png" alt />
+        <img v-if="!loginType" src="img/login/账号登录.png" alt />
+        <img v-if="loginType" src="img/login/二维码.png" alt />
         <p>扫码登录</p>
         <div class="box">
           <div class="Rightleft">
@@ -17,8 +18,20 @@
             </p>
           </div>
           <div class="RightRight">
-            <img src alt />
-            <p>扫一扫，快速登录</p>
+            <!-- <div id="erweima"></div> -->
+            <div v-if="loginType" class="rightRinp">
+              <img src="img/login/用户.png" alt />
+              <input v-model="username" placeholder="请输入用户名" type="text" />
+            </div>
+            <div v-if="loginType" class="rightRinp">
+              <img src="img/login/密码.png" alt />
+              <input v-model="userpsw" placeholder="请输入密码" type="text" />
+            </div>
+            <div v-if="loginType" class="checkBox">
+              <el-checkbox v-model="checked">记住密码</el-checkbox>
+            </div>
+            <div v-if="loginType" class="loginBtn">登 录</div>
+            <p v-if="!loginType">扫一扫，快速登录</p>
           </div>
         </div>
       </div>
@@ -33,11 +46,33 @@
   </div>
 </template>
 <script>
+// import WxLogin from "../../../public/js/wxLogin.js";
 export default {
   data() {
-    return {};
+    return {
+      // ErObj: {}
+      loginType: true,
+      checked: false,
+      username: "",
+      userpsw: ""
+    };
+  },
+  mounted() {
+    // this.queryEr();
   },
   methods: {
+    // queryEr() {
+    //   this.ErObj = new WxLogin({
+    //     self_redirect: true,
+    //     id: "erweima",
+    //     appid: "",
+    //     scope: "snsapi_login",
+    //     redirect_uri: "",
+    //     state: "",
+    //     style: "",
+    //     href: ""
+    //   });
+    // },
     toHome() {
       this.$router.push({
         path: "/"
@@ -89,6 +124,7 @@ export default {
   right: 10px;
   width: 55px;
   height: 50px;
+  cursor: pointer;
 }
 .contentRight > p {
   margin-top: 51px;
@@ -107,12 +143,55 @@ export default {
 .Rightleft {
   width: 250px;
   height: 300px;
-  background-color: #667bf3;
+  /* background-color: #667bf3; */
 }
 .RightRight {
   width: 350px;
   height: 300px;
-  background-color: #43a7f5;
+  text-align: left;
+  /* background-color: #43a7f5; */
+}
+.rightRinp {
+  width: 300px;
+  height: 42px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border: solid 1px #e1e3e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.rightRinp > img {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: 12px;
+  left: 20px;
+}
+.rightRinp > input {
+  width: 300px;
+  height: 42px;
+  padding-left: 50px;
+  line-height: 42px;
+  box-sizing: border-box;
+  border: 0;
+}
+.checkBox {
+  width: 300px;
+  margin: 0 auto 20px;
+  box-sizing: border-box;
+}
+.loginBtn {
+  width: 300px;
+  height: 42px;
+  margin: 0 auto;
+  color: white;
+  line-height: 42px;
+  background-color: #2971de;
+  border-radius: 2px;
+  text-align: center;
+  cursor: pointer;
 }
 /* bottom */
 .layoutFooterBot {

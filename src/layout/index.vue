@@ -22,7 +22,7 @@
       <div class="layoutLoginBox">
         <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
           <img src="img/layout/铃铛.png" alt="消息通知" />
-          <div v-show="userTipMove" class="tipList">
+          <div v-show="userTipMove && isLogin" class="tipList">
             <div class="tipListItem" v-for="(item , i) in 3" :key="i" @click="linTomyInfoCon(item)">
               <p>{{"杜廷玉"}} 律师 回复了您的提问</p>
               <p>{{"2019-10-11 12:30:29"}}</p>
@@ -164,7 +164,6 @@ export default {
       } else if (i == 3) {
       } else if (i == 4) {
       } else if (i == 5) {
-        
         this.$router.push({
           path: "/about"
         });
