@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import { homeParentClass } from "@/api/api";
+import { homeindexpage } from "@/api/api";
 export default {
   data() {
     return {
@@ -195,16 +195,28 @@ export default {
           reply: ""
         }
       },
-      articleList: []
+      articleList: [],
+      isLogin: false
     };
   },
   mounted() {
+    this.queryLogin();
     this.queryHomeInfo();
   },
   methods: {
+    // 查看是否登陆
+    queryLogin() {
+      if (this.$store.state.home.isLogin) {
+        localStorage.setItem("isLogin", 1);
+        this.isLogin = true;
+      }
+      if (localStorage.getItem("isLogin") == 1) {
+        this.isLogin = true;
+      }
+    },
     // 请求首页信息
     queryHomeInfo() {
-      homeParentClass().then(res => {
+      homeindexpage().then(res => {
         console.log(res.data);
         this.swipeList = res.data.broadcast;
         this.swipeBottomList = res.data.servertwo;

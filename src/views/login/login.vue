@@ -8,10 +8,11 @@
       <div class="contentRight">
         <img v-if="!loginType" src="img/login/账号登录.png" alt />
         <img v-if="loginType" src="img/login/二维码.png" alt />
-        <p>扫码登录</p>
+        <p v-if="!loginType">扫码登录</p>
+        <p>账号登录</p>
         <div class="box">
           <div class="Rightleft">
-            <img src alt />
+            <img src="img/login/erweima.jpg" alt />
             <p>
               扫码授权，完善信息
               <br />即可获取账号和密码
@@ -21,16 +22,16 @@
             <!-- <div id="erweima"></div> -->
             <div v-if="loginType" class="rightRinp">
               <img src="img/login/用户.png" alt />
-              <input v-model="username" placeholder="请输入用户名" type="text" />
+              <input v-model="username" placeholder="请输入手机号" type="text" />
             </div>
             <div v-if="loginType" class="rightRinp">
               <img src="img/login/密码.png" alt />
-              <input v-model="userpsw" placeholder="请输入密码" type="text" />
+              <input v-model="userpsw" placeholder="请输入身份证后6位" type="text" />
             </div>
             <div v-if="loginType" class="checkBox">
-              <el-checkbox v-model="checked">记住密码</el-checkbox>
+              <el-checkbox v-model="rememberPsw">记住密码</el-checkbox>
             </div>
-            <div v-if="loginType" class="loginBtn">登 录</div>
+            <div v-if="loginType" @click="login" class="loginBtn">登 录</div>
             <p v-if="!loginType">扫一扫，快速登录</p>
           </div>
         </div>
@@ -38,7 +39,7 @@
     </div>
     <div class="layoutFooterBot">
       <p>北京律狮科技有限公司，备案号 京ICP备18043352号</p>
-      <p>技术支持：上海腾虫信息科技有限公司</p>
+      <p>技术支持：北京律狮科技有限公司</p>
       <p>
         <img src="img/layout/ghs.png" alt="国徽" />京公网安备 11010502035663号
       </p>
@@ -47,18 +48,25 @@
 </template>
 <script>
 // import WxLogin from "../../../public/js/wxLogin.js";
+import { homelogin } from "@/api/api";
 export default {
   data() {
     return {
       // ErObj: {}
       loginType: true,
-      checked: false,
+      rememberPsw: false,
       username: "",
       userpsw: ""
     };
   },
   mounted() {
     // this.queryEr();
+    if (localStorage.getItem("rememberPsw") == "true") {
+      this.username = localStorage.getItem("username");
+      this.userpsw = localStorage.getItem("userpsw");
+      console.log(localStorage.getItem("rememberPsw"));
+      this.rememberPsw = true;
+    }
   },
   methods: {
     // queryEr() {
@@ -73,10 +81,41 @@ export default {
     //     href: ""
     //   });
     // },
+    login() {
+      let data = {
+        phone: this.username,
+        pass: this.userpsw
+      };
+      homelogin(data).then(res => {
+        if (res.code == 200) {
+          console.log(res.data);
+          localStorage.setItem("userID", res.data.user_id);
+          localStorage.setItem("userImg", res.data.picture);
+          localStorage.setItem("userName", res.data.nickName);
+          this.$store.commit("home/SET_Islogin", true);
+          this.$router.push({
+            path: "/"
+          });
+        }
+      });
+    },
     toHome() {
       this.$router.push({
         path: "/"
       });
+    }
+  },
+  watch: {
+    rememberPsw() {
+      if (this.rememberPsw) {
+        localStorage.setItem("username", this.username);
+        localStorage.setItem("userpsw", this.userpsw);
+        localStorage.setItem("rememberPsw", true);
+      } else {
+        localStorage.setItem("username", "no");
+        localStorage.setItem("userpsw", "no");
+        localStorage.setItem("rememberPsw", false);
+      }
     }
   }
 };
@@ -144,6 +183,21 @@ export default {
   width: 250px;
   height: 300px;
   /* background-color: #667bf3; */
+}
+.Rightleft > img {
+  width: 160px;
+  height: 160px;
+  margin-bottom: 17px;
+}
+.Rightleft > p {
+  width: 160px;
+  margin: 0 auto;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #2971de;
+  text-align: left;
 }
 .RightRight {
   width: 350px;

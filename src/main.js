@@ -4,8 +4,9 @@ import router from "./router";
 import store from "./store";
 
 // vant组件按需引入;
-import "@/utils/element.js";
-import "element-ui/lib/theme-chalk/index.css";
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 
 // date对象日期时间格式化
 import "@/utils/format.js";

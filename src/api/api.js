@@ -12,9 +12,24 @@ export function test(data) {
     data
   });
 }
-
+// 登录
+export function homelogin(data) {
+  return request({
+    url: "/pc/Wlogin/login",
+    method: "post",
+    data
+  });
+}
+// 铃铛消息
+export function homesuspension(data) {
+  return request({
+    url: "/pc/News/suspension",
+    method: "post",
+    data
+  });
+}
 // ---------------------- Home --------------------------- //
-export function homeParentClass(data) {
+export function homeindexpage(data) {
   return request({
     url: "/pc/home/indexpage",
     method: "post",

@@ -23,9 +23,9 @@
         <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
           <img src="img/layout/铃铛.png" alt="消息通知" />
           <div v-show="userTipMove && isLogin" class="tipList">
-            <div class="tipListItem" v-for="(item , i) in 3" :key="i" @click="linTomyInfoCon(item)">
-              <p>{{"杜廷玉"}} 律师 回复了您的提问</p>
-              <p>{{"2019-10-11 12:30:29"}}</p>
+            <div class="tipListItem" v-for="(item , i) in tipArr" :key="i" @click="linTomyInfoCon(item)">
+              <p>{{item.definition}}</p>
+              <p>{{item.time}}</p>
             </div>
             <div class="moreTip" @click="linTomyInfo(item)">
               <p>查看全部 ></p>
@@ -33,11 +33,12 @@
           </div>
         </div>
         <div class="layoutLoginBlock" @mouseenter="userImgMoveEnter" @mouseleave="userImgMoveLeave">
-          <p @click="toLogin">登录</p>
+          <p v-if="!isLogin" @click="toLogin">登录</p>
+          <img v-if="isLogin" :src="userImg" alt />
           <div v-show="userInfoMove && isLogin" class="infoList">
-            <div class="userInfo">
-              <img src alt />
-              <p>张三Top</p>
+            <div class="userInfoLayout">
+              <img :src="userImg" alt />
+              <p>{{userName}}</p>
             </div>
             <div class="itemListItem">
               <img src="img/home/PC信息.png" alt />
@@ -83,7 +84,7 @@
       </div>
       <div class="layoutFooterBot">
         <p>北京律狮科技有限公司，备案号 京ICP备18043352号</p>
-        <p>技术支持：上海腾虫信息科技有限公司</p>
+        <p>技术支持：北京律狮科技有限公司</p>
         <p>
           <img src="img/layout/ghs.png" alt="国徽" />京公网安备 11010502035663号
         </p>
@@ -128,16 +129,53 @@
 </template>
 
 <script>
+import { homesuspension } from "@/api/api";
 export default {
   name: "defaut-layout",
   data() {
     return {
       userTipMove: false,
       userInfoMove: false,
-      isLogin: false
+      isLogin: false,
+      userID: "",
+      userName: "",
+      userImg: "",
+      tipArr: []
     };
   },
+  mounted() {
+    this.queryLogin();
+    this.queryHomesuspension();
+  },
   methods: {
+    // 查看是否登陆
+    queryLogin() {
+      if (this.$store.state.home.isLogin) {
+        localStorage.setItem("isLogin", 1);
+        this.isLogin = true;
+        this.userID = localStorage.getItem("userID");
+        this.userImg = localStorage.getItem("userImg");
+        this.userName = localStorage.getItem("userName");
+      }
+      if (localStorage.getItem("isLogin") == 1) {
+        this.isLogin = true;
+        this.userID = localStorage.getItem("userID");
+        this.userImg = localStorage.getItem("userImg");
+        this.userName = localStorage.getItem("userName");
+      }
+    },
+    // 请求铃铛消息
+    queryHomesuspension() {
+      let data = {
+        user_id: this.userID
+      };
+      homesuspension(data).then(res => {
+        console.log(res.data);
+        if (res.code == 200) {
+          this.tipArr = res.data;
+        }
+      });
+    },
     userTipMoveEnter() {
       this.userTipMove = true;
     },
@@ -264,7 +302,6 @@ export default {
   top: 55px;
   right: 0;
   width: 240px;
-  height: 279px;
   padding-top: 29px;
   box-sizing: border-box;
   background-color: #ffffff;
@@ -275,7 +312,7 @@ export default {
   width: 240px;
   height: 60px;
   box-sizing: border-box;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   border-bottom: 1px solid #eeeeee;
   cursor: pointer;
 }
@@ -323,6 +360,12 @@ export default {
 .layoutLoginBlock > p {
   cursor: pointer;
 }
+.layoutLoginBlock > img {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
 .infoList {
   position: absolute;
   top: 55px;
@@ -334,7 +377,7 @@ export default {
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
   border-radius: 5px 5px 0px 0px;
 }
-.userInfo {
+.userInfoLayout {
   width: 150px;
   height: 50px;
   display: flex;
@@ -348,7 +391,7 @@ export default {
   color: white;
   font-size: 14px;
 }
-.userInfo > img {
+.userInfoLayout > img {
   width: 30px;
   height: 30px;
   margin-right: 10px;
@@ -365,6 +408,10 @@ export default {
   align-items: center;
   justify-content: left;
   cursor: pointer;
+}
+.itemListItem:hover {
+  color: white;
+  background-color: #2971de;
 }
 .itemListItem > img {
   width: 14px;

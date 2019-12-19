@@ -1,12 +1,16 @@
 // home状态对象
 const state = {
-  test: "a test"
+  test: "a test",
+  isLogin: false
 };
 
 // 修改
 const mutations = {
   SET_TEST: (state, val) => {
     state.test = val;
+  },
+  SET_Islogin: (state, val) => {
+    state.isLogin = val;
   }
 };
 
@@ -14,6 +18,9 @@ const mutations = {
 const actions = {
   setTest({ commit }, val) {
     commit("SET_TEST", val);
+  },
+  setIslogin({ commit }, val) {
+    commit("SET_Islogin", val);
   }
 };
 
