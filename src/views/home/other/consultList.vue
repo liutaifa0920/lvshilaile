@@ -12,54 +12,92 @@
     </div>
 
     <div class="contentBox">
-      <div class="content" v-for="(item, i) in 3" :key="i">
+      <div class="content" v-for="(item, i) in infoList" :key="i">
         <div class="contentT">
-          <img src="img/home/timg (2).jpeg" alt />
+          <img :src="item.picture" alt />
           <div class="contentTR">
-            <p>{{"李四"}}</p>
-            <p>{{"2019-10-11 12:30:29"}}</p>
+            <p>{{item.name}}</p>
+            <p>{{item.time}}</p>
           </div>
         </div>
-        <div class="contentQText">请问如何注册公司？需要什么材料？有哪些流程？</div>
+        <div class="contentQText">{{item.problem}}</div>
         <div class="contentQImg">
-          <img v-for="(item, i) in 3" :key="i" src="img/home/timg (2).jpeg" alt />
+          <img
+            v-show="currentType == 2 && item.url"
+            v-for="(items, index) in item.url"
+            :key="index"
+            src="img/home/timg (2).jpeg"
+            alt
+          />
         </div>
         <div class="contentB">
-          <img src="img/home/timg (2).jpeg" alt />
+          <img :src="item.image" alt />
           <div class="contentBR">
-            <p>{{"杜廷玉"}} 律师</p>
-            <p>{{"2019-10-11 12:30:29"}}</p>
+            <p>{{item.definition}} 律师</p>
+            <p>{{item.replytime}}</p>
           </div>
         </div>
-        <div class="contentBQText">
-          注册公司准备材料如下所示：
-          1、全体投资人的身份证。2、法人身份证、监事身份证(或经理)。3、公司章程、股东决定或股东会决议书。4、注册地址的租赁协议、房产证复印件并由产权所有人盖章。5、各类申请表，比如名称申请表、公司设立登记申请书等等。6、经营范围。7、其他如果你的经营范围内涉及到前置许可的话，还可能会提供另外的材料或证明。
-        </div>
+        <div class="contentBQText">{{item.reply}}</div>
         <div class="line"></div>
       </div>
       <div class="pageBox">
         <el-pagination
           background
+          :current-page="currentPage"
+          @current-change="handleCurrentChange"
           layout="prev, pager, next"
           prev-text="上一页"
           next-text="下一页"
-          :total="1000"
+          :page-size="currentSize"
+          :total="allTotal"
         ></el-pagination>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { CasesimpleSimpleindex } from "@/api/api";
 export default {
   data() {
     return {
-      currentType: 1
+      currentType: 1,
+      currentPage: 1,
+      currentSize: 10,
+      allTotal: 0,
+      infoList: []
     };
   },
-  mounted() {},
+  mounted() {
+    this.queryParam();
+  },
   methods: {
+    queryParam() {
+      console.log(this.$route.query.type);
+      this.currentType = this.$route.query.type;
+      this.queryListInfo();
+    },
+    queryListInfo() {
+      let data = {
+        limit: this.currentSize,
+        page: this.currentPage,
+        datastatus: this.currentType
+      };
+      CasesimpleSimpleindex(data).then(res => {
+        console.log(res.data.data);
+        if (res.code == 200) {
+          this.infoList = res.data.data;
+          this.allTotal = res.data.total;
+        }
+      });
+    },
+    handleCurrentChange(val) {
+      console.log(val);
+      this.currentPage = val;
+      this.queryListInfo();
+    },
     titleClick(i) {
       this.currentType = i;
+      this.queryListInfo();
     }
   }
 };
@@ -107,6 +145,7 @@ export default {
   margin: 0 25px;
   line-height: 66px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 .isAction {
   color: #2971de;

@@ -16,7 +16,12 @@
     </div>
     <!-- SwipeBottom -->
     <div class="homeSwipeBottom">
-      <div class="homeSwipeBottomItem" v-for="(item, i) in swipeBottomList" :key="i">
+      <div
+        class="homeSwipeBottomItem"
+        v-for="(item, i) in swipeBottomList"
+        :key="i"
+        @click="serviceClick(item)"
+      >
         <img :src="item.image" alt />
         <p class="homeSwipeBottomItemP1">{{item.name}}</p>
         <p class="homeSwipeBottomItemP2">{{item.name}}</p>
@@ -32,7 +37,12 @@
             <img :src="serviceList[0].img" alt />
             <p>{{serviceList[0].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+              <div
+                class="homeUnitItemConList"
+                v-for="(item, i) in serviceList[0].two"
+                :key="i"
+                @click="serviceClick(item)"
+              >
                 <span>{{item.twoname}}</span>
               </div>
             </div>
@@ -41,7 +51,12 @@
             <img :src="serviceList[1].img" alt />
             <p>{{serviceList[1].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+              <div
+                class="homeUnitItemConList"
+                v-for="(item, i) in serviceList[0].two"
+                :key="i"
+                @click="serviceClick(item)"
+              >
                 <span>{{item.twoname}}</span>
               </div>
             </div>
@@ -51,7 +66,12 @@
           <img :src="serviceList[3].img" alt />
           <p>{{serviceList[3].name}}</p>
           <div class="homeUnitItemCon">
-            <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+            <div
+              class="homeUnitItemConList"
+              v-for="(item, i) in serviceList[0].two"
+              :key="i"
+              @click="serviceClick(item)"
+            >
               <span>{{item.twoname}}</span>
             </div>
           </div>
@@ -61,7 +81,12 @@
             <img :src="serviceList[2].img" alt />
             <p>{{serviceList[2].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+              <div
+                class="homeUnitItemConList"
+                v-for="(item, i) in serviceList[0].two"
+                :key="i"
+                @click="serviceClick(item)"
+              >
                 <span>{{item.twoname}}</span>
               </div>
             </div>
@@ -70,7 +95,12 @@
             <img :src="serviceList[4].img" alt />
             <p>{{serviceList[4].name}}</p>
             <div class="homeUnitItemCon">
-              <div class="homeUnitItemConList" v-for="(item, i) in serviceList[0].two" :key="i">
+              <div
+                class="homeUnitItemConList"
+                v-for="(item, i) in serviceList[0].two"
+                :key="i"
+                @click="serviceClick(item)"
+              >
                 <span>{{item.twoname}}</span>
               </div>
             </div>
@@ -107,7 +137,7 @@
       <p class="homeItemTit">Consultation 咨询案例</p>
       <div class="homeItemTitLine"></div>
       <div class="homeConsultationBox">
-        <div class="homeConsultationItem">
+        <div class="homeConsultationItem" @click="toConsultList(1)">
           <div class="homeConsultationItemT Blue">
             <p>免费咨询</p>
             <img class="homeConsultationItemTMore" src="img/home/更多.png" alt />
@@ -121,7 +151,7 @@
             </p>
           </div>
         </div>
-        <div class="homeConsultationItem">
+        <div class="homeConsultationItem" @click="toConsultList(2)">
           <div class="homeConsultationItemT Red">
             <p>全面咨询</p>
             <img class="homeConsultationItemTMore" src="img/home/更多.png" alt />
@@ -224,6 +254,29 @@ export default {
         this.teamList = res.data.team;
         this.consultationList = res.data.simple;
         this.articleList = res.data.article;
+      });
+    },
+    serviceClick(item) {
+      console.log(item);
+      let id = "";
+      if (item.id) {
+        id = item.id;
+      } else if (item.server_two_id) {
+        id = item.server_two_id;
+      }
+      this.$router.push({
+        path: "/serviceInfo",
+        query: {
+          id
+        }
+      });
+    },
+    toConsultList(t) {
+      this.$router.push({
+        path: "/consultList",
+        query: {
+          type: t
+        }
       });
     },
     // 轮播上下页

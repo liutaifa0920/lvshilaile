@@ -36,3 +36,36 @@ export function homeindexpage(data) {
     data
   });
 }
+// wo消息
+
+export function homeusersimple(data) {
+  return request({
+    url: "/pc/News/usersimple",
+    method: "post",
+    data
+  });
+}
+// 消息详情
+export function NewsDetails(data) {
+  return request({
+    url: "/pc/News/details",
+    method: "post",
+    data
+  });
+}
+// 服务
+export function ServiceArticleview(data) {
+  return request({
+    url: "/pc/Service/articleview",
+    method: "post",
+    data
+  });
+}
+// 案例资讯
+export function CasesimpleSimpleindex(data) {
+  return request({
+    url: "/pc/Casesimple/simpleindex",
+    method: "post",
+    data
+  });
+}

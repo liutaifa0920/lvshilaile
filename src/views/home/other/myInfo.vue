@@ -28,17 +28,17 @@
         </div>
       </div>
       <div class="contentRight">
-        <div class="listItem" v-for="(item,i) in 6" :key="i" @click="linktoMyInfoItem(item)">
+        <div class="listItem" v-for="(item,i) in infoList" :key="i" @click="linktoMyInfoItem(item)">
           <div class="listItemT">
-            <img src="img/home/timg (2).jpeg" alt />
+            <img :src="item.image" alt />
             <div class="listItemTR">
-              <p>{{"杜廷玉"}} 律师 回复了您的提问</p>
-              <p>{{"2019-10-11 12:30:29"}}</p>
+              <p>{{item.definition}}</p>
+              <p>{{item.time}}</p>
             </div>
           </div>
-          <div class="listItemB">{{"注册公司准备材料如下所示：1、全体投资人的身份证。2、法人身份证、监事身份证(或经理)。3、公司章程、股..."}}</div>
+          <div class="listItemB">{{item.reply}}</div>
         </div>
-        <div class="pageBox">
+        <!-- <div class="pageBox">
           <el-pagination
             background
             layout="prev, pager, next"
@@ -46,18 +46,36 @@
             next-text="下一页"
             :total="1000"
           ></el-pagination>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
 </template>
 <script>
+import { homeusersimple } from "@/api/api";
 export default {
   data() {
-    return {};
+    return {
+      userID: "",
+      infoList: []
+    };
   },
-  mounted() {},
+  mounted() {
+    this.userID = localStorage.getItem("userID");
+    this.queryInfoList();
+  },
   methods: {
+    queryInfoList() {
+      let data = {
+        user_id: this.userID
+      };
+      homeusersimple(data).then(res => {
+        console.log(res.data);
+        if (res.code == 200) {
+          this.infoList = res.data;
+        }
+      });
+    },
     linketoInfo(i) {
       if (i == 1) {
         this.$router.push({
@@ -73,7 +91,11 @@ export default {
     },
     linktoMyInfoItem(item) {
       this.$router.push({
-        path: "/myInfoCon"
+        path: "/myInfoCon",
+        query: {
+          id: item.id,
+          type: item.type
+        }
       });
     }
   }

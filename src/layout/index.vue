@@ -23,11 +23,16 @@
         <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
           <img src="img/layout/铃铛.png" alt="消息通知" />
           <div v-show="userTipMove && isLogin" class="tipList">
-            <div class="tipListItem" v-for="(item , i) in tipArr" :key="i" @click="linTomyInfoCon(item)">
+            <div
+              class="tipListItem"
+              v-for="(item , i) in tipArr"
+              :key="i"
+              @click="linTomyInfoCon(item)"
+            >
               <p>{{item.definition}}</p>
               <p>{{item.time}}</p>
             </div>
-            <div class="moreTip" @click="linTomyInfo(item)">
+            <div class="moreTip" @click="linTomyInfo()">
               <p>查看全部 ></p>
             </div>
           </div>
@@ -48,7 +53,7 @@
               <img src="img/home/PC资料.png" alt />
               <p>我的资料</p>
             </div>
-            <div class="itemListItem">
+            <div class="itemListItem" @click="linTomyInfo()">
               <img src="img/home/消息.png" alt />
               <p>我的消息</p>
             </div>
@@ -170,7 +175,7 @@ export default {
         user_id: this.userID
       };
       homesuspension(data).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.code == 200) {
           this.tipArr = res.data;
         }
@@ -207,9 +212,14 @@ export default {
         });
       }
     },
-    linTomyInfoCon() {
+    linTomyInfoCon(item) {
+      console.log(item);
       this.$router.push({
-        path: "/myInfoCon"
+        path: "/myInfoCon",
+        query: {
+          id: item.id,
+          type: item.type
+        }
       });
     },
     linTomyInfo() {

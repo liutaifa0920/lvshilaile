@@ -8,37 +8,60 @@
     </div>
     <div class="content">
       <div class="contentT">
-        <img src="img/home/timg (2).jpeg" alt />
+        <img :src="infoList.picture" alt />
         <div class="contentTR">
-          <p>{{"李四"}}</p>
-          <p>{{"2019-10-11 12:30:29"}}</p>
+          <p>{{infoList.nickName}}</p>
+          <p>{{infoList.time}}</p>
         </div>
       </div>
       <div class="contentQText">请问如何注册公司？需要什么材料？有哪些流程？</div>
       <div class="contentQImg">
-        <img v-for="(item, i) in 3" :key="i" src="img/home/timg (2).jpeg" alt />
+        <img v-show="infoList.url" v-for="(item, i) in infoList.url" :key="i" src="img/home/timg (2).jpeg" alt />
       </div>
       <div class="contentB">
-        <img src="img/home/timg (2).jpeg" alt />
+        <img :src="infoList.image" alt />
         <div class="contentBR">
-          <p>{{"杜廷玉"}} 律师</p>
-          <p>{{"2019-10-11 12:30:29"}}</p>
+          <p>{{infoList.definition}} 律师</p>
+          <p>{{infoList.replytime}}</p>
         </div>
       </div>
       <div class="contentBQText">
-        注册公司准备材料如下所示：
-        1、全体投资人的身份证。2、法人身份证、监事身份证(或经理)。3、公司章程、股东决定或股东会决议书。4、注册地址的租赁协议、房产证复印件并由产权所有人盖章。5、各类申请表，比如名称申请表、公司设立登记申请书等等。6、经营范围。7、其他如果你的经营范围内涉及到前置许可的话，还可能会提供另外的材料或证明。
-      </div>
+        {{infoList.reply}}</div>
     </div>
   </div>
 </template>
 <script>
+import { NewsDetails } from "@/api/api";
 export default {
   data() {
-    return {};
+    return {
+      id: "",
+      type: "",
+      infoList: {}
+    };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.queryParam();
+  },
+  methods: {
+    queryParam() {
+      this.id = this.$route.query.id;
+      this.type = this.$route.query.type;
+      this.queryListInfo();
+    },
+    queryListInfo() {
+      let data = {
+        id: this.id,
+        type: this.type
+      };
+      NewsDetails(data).then(res => {
+        console.log(res.data);
+        if (res.code == 200) {
+          this.infoList = res.data;
+        }
+      });
+    }
+  }
 };
 </script>
 <style scoped>

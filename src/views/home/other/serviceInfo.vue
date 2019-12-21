@@ -7,22 +7,27 @@
       </el-breadcrumb>
     </div>
     <div class="topBox">
-      <img src="img/about/联系我们底图.png" alt />
+      <img :src="infoList.server.top_image" alt />
       <div class="topBoxRight">
         <div class="topBoxRightTop">
-          <p>注册商标</p>
-          <p>线上提交材料，为你快速注册公司</p>
+          <p>{{infoList.server.name}}</p>
+          <p>{{infoList.server.describes}}</p>
         </div>
         <div class="topBoxRightjiage">
           <p>价格</p>
-          <p>¥500</p>
+          <p>¥{{infoList.server.money}}</p>
         </div>
         <div class="topBoxRightlvshi">
           <p>服务律师</p>
           <div class="topBoxRightlvshiRight">
-            <div class="topBoxRightlvshiRightItem" v-for="(item, i) in 6" :key="i">
-              <img src="img/about/联系我们底图.png" alt />
-              <p>杜廷玉</p>
+            <div
+              v-show="infoList.lawyer"
+              class="topBoxRightlvshiRightItem"
+              v-for="(item, i) in infoList.lawyer"
+              :key="i"
+            >
+              <img :src="item.image" alt />
+              <p>{{item.name}}</p>
             </div>
           </div>
         </div>
@@ -38,24 +43,80 @@
     <div class="bottom">
       <div class="bottomleft">
         <div class="bottomleftT">相关产品推荐</div>
-        <div v-for="(item, i) in 6" :key="i" class="bottomleftI">合同复审</div>
+        <div
+          v-show="infoList.ervertwo"
+          v-for="(item, i) in infoList.ervertwo"
+          :key="i"
+          @click="leftItemClick(item.server_two_id)"
+          class="bottomleftI"
+        >{{item.name}}</div>
       </div>
       <div class="bottomRight">
         <div class="bottomRightTop">服务详情</div>
-        <div></div>
+        <div>
+          <img style="width: 100%;" :src="infoList.server.info_image" alt />
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { ServiceArticleview } from "@/api/api";
 export default {
   data() {
     return {
-      payNum: ""
+      payNum: "",
+      infoList: {
+        server: {
+          server_two_id: 14,
+          server_one_id: 17,
+          name: "纠纷处理",
+          describes: "纠纷处理",
+          money: "0.1",
+          top_image: "http://tiandoulvshi.oss-cn.png",
+          info_image: "http://tiandoulvshi.oss-cn8.png"
+        },
+        lawyer: [
+          {
+            lawyer_id: 1,
+            name: "梁宏刚",
+            image:
+              "http://tiandoulvshi.oss-cn-beijing.aliyuncs.com/zjl/img/dd5f9c77528a927b2058409144083568.jpg"
+          }
+        ],
+        ervertwo: [
+          {
+            server_two_id: 15,
+            name: "股权设计"
+          }
+        ]
+      }
     };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.queryParam();
+  },
+  methods: {
+    queryParam() {
+      this.id = this.$route.query.id;
+      this.queryInfo();
+    },
+    queryInfo() {
+      let data = {
+        server_two_id: this.id
+      };
+      ServiceArticleview(data).then(res => {
+        console.log(res.data);
+        if (res.code == 200) {
+          this.infoList = res.data;
+        }
+      });
+    },
+    leftItemClick(id) {
+      this.id = id;
+      this.queryInfo();
+    }
+  }
 };
 </script>
 <style scoped>
@@ -239,6 +300,7 @@ export default {
   font-size: 16px;
   text-align: left;
   line-height: 40px;
+  cursor: pointer;
 }
 .bottomRight {
   width: 916px;
