@@ -175,8 +175,8 @@ export default {
         user_id: this.userID
       };
       homesuspension(data).then(res => {
-        // console.log(res.data);
         if (res.code == 200) {
+          console.log(res);
           this.tipArr = res.data;
         }
       });

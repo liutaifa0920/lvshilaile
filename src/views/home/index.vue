@@ -171,7 +171,7 @@
       <p class="homeItemTit">News 新闻中心</p>
       <div class="homeItemTitLine"></div>
       <div class="homeNewsBox">
-        <div class="homeNewsItem" v-for="(item,i) in articleList" :key="i">
+        <div class="homeNewsItem" v-for="(item,i) in articleList" :key="i" @click="newClick(item)">
           <img class="homeNewsItemLeft" :src="item.image" alt />
           <div class="homeNewsItemRight">
             <p>{{item.title}}</p>
@@ -179,7 +179,7 @@
             <p>{{item.add_time}}</p>
           </div>
         </div>
-        <div class="homeNewsMoreBtn">查看更多</div>
+        <div class="homeNewsMoreBtn" @click="toActrcleCLick">查看更多</div>
       </div>
     </div>
   </div>
@@ -271,11 +271,24 @@ export default {
         }
       });
     },
+    toActrcleCLick() {
+      this.$router.push({
+        path: "/legalAdvice"
+      });
+    },
     toConsultList(t) {
       this.$router.push({
         path: "/consultList",
         query: {
           type: t
+        }
+      });
+    },
+    newClick(item) {
+      this.$router.push({
+        path: "/articleInfo",
+        query: {
+          id: item.id
         }
       });
     },

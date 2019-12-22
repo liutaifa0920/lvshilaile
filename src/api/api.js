@@ -69,3 +69,19 @@ export function CasesimpleSimpleindex(data) {
     data
   });
 }
+// 新闻中心列表
+export function JournalismArticle(data) {
+  return request({
+    url: "/pc/Journalism/article",
+    method: "post",
+    data
+  });
+}
+// 新闻消息单个详情
+export function JournalismArticleview(data) {
+  return request({
+    url: "/pc/Journalism/articleview",
+    method: "post",
+    data
+  });
+}

@@ -9,21 +9,24 @@
 
     <div class="listNews">
       <div class="listNewsBox">
-        <div class="listNewsItem" v-for="(item,i) in 5" :key="i">
-          <img class="listNewsItemLeft" src="img/home/club-2492011_960_720.jpg" alt />
+        <div class="listNewsItem" v-for="(item, i) in infoList" :key="i" @click="newClick(item)">
+          <img class="listNewsItemLeft" :src="item.image" alt />
           <div class="listNewsItemRight">
-            <p>花数万元报班孩子仍考倒数第一，家长怒告培训班！法院这样判</p>
-            <p>为了提高孩子的成绩，不少家长会选择给孩子报培训班。但报了班后，就一定有效果吗？如果适得其反，报班的钱能要回吗？</p>
-            <p>2019-10-11</p>
+            <p>{{item.title}}</p>
+            <p>{{item.abstract}}</p>
+            <p>{{item.add_time}}</p>
           </div>
         </div>
         <div class="pageBox">
           <el-pagination
             background
+            :current-page="currentPage"
+            @current-change="handleCurrentChange"
             layout="prev, pager, next"
             prev-text="上一页"
             next-text="下一页"
-            :total="1000"
+            :page-size="currentSize"
+            :total="allTotal"
           ></el-pagination>
         </div>
       </div>
@@ -31,12 +34,47 @@
   </div>
 </template>
 <script>
+import { JournalismArticle } from "@/api/api";
 export default {
   data() {
-    return {};
+    return {
+      currentPage: 1,
+      currentSize: 10,
+      allTotal: 0,
+      infoList: []
+    };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.queryListInfo();
+  },
+  methods: {
+    queryListInfo() {
+      let data = {
+        limit: this.currentSize,
+        page: this.currentPage
+      };
+      JournalismArticle(data).then(res => {
+        console.log(res.data);
+        if (res.code == 200) {
+          this.infoList = res.data.data;
+          this.allTotal = res.data.total;
+        }
+      });
+    },
+    newClick(item) {
+      this.$router.push({
+        path: "/articleInfo",
+        query: {
+          id: item.id
+        }
+      });
+    },
+    handleCurrentChange(val) {
+      console.log(val);
+      this.currentPage = val;
+      this.queryListInfo();
+    }
+  }
 };
 </script>
 <style>
