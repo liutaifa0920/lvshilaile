@@ -85,3 +85,62 @@ export function JournalismArticleview(data) {
     data
   });
 }
+
+//  企业
+// 企业列表
+export function EnterpriseIndexlist(data) {
+  return request({
+    url: "/pc/Enterprise/indexlist",
+    method: "post",
+    data
+  });
+}
+// 删除企业
+export function EnterpriseDellist(data) {
+  return request({
+    url: "/pc/Enterprise/dellist",
+    method: "post",
+    data
+  });
+}
+// 添加企业
+export function EnterpriseAddlist(data) {
+  return request({
+    url: "/pc/Enterprise/addlist",
+    method: "post",
+    data
+  });
+}
+// 编辑页面数据
+export function EnterpriseSelEnterprise(data) {
+  return request({
+    url: "/pc/Enterprise/selEnterprise",
+    method: "post",
+    data
+  });
+}
+// 编辑页面接口
+export function EnterpriseUpEnterprise(data) {
+  return request({
+    url: "/pc/Enterprise/upEnterprise",
+    method: "post",
+    data
+  });
+}
+// 我的资料
+export function UserIndexlist(data) {
+  return request({
+    url: "/pc/User/indexlist",
+    method: "post",
+    data
+  });
+}
+// 修改我的资料
+export function UserAddindex(data) {
+  return request({
+    url: "/pc/User/addindex",
+    method: "post",
+    data
+  });
+}
+

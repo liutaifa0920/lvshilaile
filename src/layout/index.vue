@@ -45,7 +45,7 @@
               <img :src="userImg" alt />
               <p>{{userName}}</p>
             </div>
-            <div class="itemListItem">
+            <div class="itemListItem" @click="linTobussiness()">
               <img src="img/home/PC信息.png" alt />
               <p>企业信息</p>
             </div>
@@ -150,7 +150,10 @@ export default {
   },
   mounted() {
     this.queryLogin();
-    this.queryHomesuspension();
+    if (localStorage.getItem("isLogin") != 1) {
+      console.log(74326423746567)
+      this.queryHomesuspension();
+    }
   },
   methods: {
     // 查看是否登陆
@@ -220,6 +223,11 @@ export default {
           id: item.id,
           type: item.type
         }
+      });
+    },
+    linTobussiness() {
+      this.$router.push({
+        path: "/businessInfo"
       });
     },
     linTomyInfo() {

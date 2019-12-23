@@ -9,15 +9,15 @@
     <div class="content">
       <div class="contentLeft">
         <div class="contentLeftT">
-          <img src="img/home/timg (2).jpeg" />
-          <p>张三TOP</p>
+          <img :src="infoList.user.picture" />
+          <p>{{infoList.user.nickName}}</p>
         </div>
         <div class="contentLeftB">
           <p class="contentLeftBItem isAction" @click="linketoInfo(1)">
             <img src="img/home/PC信息 (1).png" /> 企业信息
           </p>
-          <p class="contentLeftBItem" @click="linketoInfo(2)" >
-            <img src="img/home/PC资料.png"/> 我的资料
+          <p class="contentLeftBItem" @click="linketoInfo(2)">
+            <img src="img/home/PC资料.png" /> 我的资料
           </p>
           <p class="contentLeftBItem" @click="linketoInfo(3)">
             <img src="img/home/消息.png" /> 我的消息
@@ -28,20 +28,25 @@
         </div>
       </div>
       <div class="contentRight">
-        <div class="contentRightT">+ 添加企业</div>
+        <div class="contentRightT" @click="addBusiness(1, '')">+ 添加企业</div>
         <div class="contentRightB">
           <div class="contentRightBTit">
             <div>公司名称</div>
             <div>操作</div>
           </div>
-          <div class="contentRightBItem" v-for="(item ,i) in 5" :key="i">
-            <div class="contentRightBItemLeft">山东旭兴科技有限公司山东旭兴科技有限公司</div>
+          <div
+            v-show="infoList.result"
+            class="contentRightBItem"
+            v-for="(item ,i) in infoList.result"
+            :key="i"
+          >
+            <div class="contentRightBItemLeft">{{item.business_name}}</div>
             <div class="contentRightBItemRight">
-              <div class="contentRightBItemRightL">
+              <div class="contentRightBItemRightL" @click="addBusiness(2, item.id)">
                 <img src="img/home/编辑.png" alt />
                 编辑
               </div>
-              <div class="contentRightBItemRightR">
+              <div class="contentRightBItemRightR" @click="deleBusiness(item.id)">
                 <img src="img/home/删除.png" alt />
                 删除
               </div>
@@ -53,12 +58,63 @@
   </div>
 </template>
 <script>
+import { EnterpriseIndexlist, EnterpriseDellist } from "@/api/api";
 export default {
   data() {
-    return {};
+    return {
+      infoList: {
+        user: {
+          nickName: "",
+          picture: ""
+        },
+        result: [
+          {
+            id: 16,
+            business_name: ""
+          },
+          {
+            id: 17,
+            business_name: ""
+          }
+        ]
+      }
+    };
   },
-  mounted() {},
+  mounted() {
+    if (localStorage.getItem("isLogin") == 1) {
+      this.user_id = localStorage.getItem("userID");
+      this.queryInfo();
+    }
+  },
   methods: {
+    queryInfo() {
+      let data = {
+        user_id: this.user_id
+      };
+      EnterpriseIndexlist(data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.infoList = res.data;
+        }
+      });
+    },
+    deleBusiness(id) {
+      let data = {
+        id
+      };
+      EnterpriseDellist(data).then(res => {
+        console.log(res);
+      });
+    },
+    addBusiness(t, id) {
+      this.$router.push({
+        path: "/setBusinessInfo",
+        query: {
+          type: t,
+          id
+        }
+      });
+    },
     linketoInfo(i) {
       if (i == 1) {
       } else if (i == 2) {

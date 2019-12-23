@@ -9,8 +9,8 @@
     <div class="content">
       <div class="contentLeft">
         <div class="contentLeftT">
-          <img src="img/home/timg (2).jpeg" />
-          <p>张三TOP</p>
+          <img :src="userInfo.left.picture" />
+          <p>{{userInfo.left.nickName}}</p>
         </div>
         <div class="contentLeftB">
           <p class="contentLeftBItem" @click="linketoInfo(1)">
@@ -45,12 +45,14 @@
             <el-input v-model="adress"></el-input>
           </el-form-item>
         </el-form>
-        <div class="setBtn">保存</div>
+        <div class="setBtn" @click="saveBtnClick">保存</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { Message } from "element-ui";
+import { UserIndexlist, UserAddindex } from "@/api/api";
 export default {
   data() {
     return {
@@ -58,11 +60,58 @@ export default {
       mobile: "",
       IDCardNum: "",
       schooling: "",
-      adress: ""
+      adress: "",
+      userInfo: {
+        left: {
+          nickName: "",
+          picture: ""
+        },
+        right: {
+          user_name: "",
+          phone: "",
+          card: "",
+          education: "",
+          address: ""
+        }
+      }
     };
   },
-  mounted() {},
+  mounted() {
+    this.queryUserInfo();
+  },
   methods: {
+    queryUserInfo() {
+      let data = {
+        user_id: localStorage.getItem("userID")
+      };
+      UserIndexlist(data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.userInfo = res.data;
+          this.name = res.data.right.user_name;
+          this.mobile = res.data.right.phone;
+          this.IDCardNum = res.data.right.card;
+          this.schooling = res.data.right.education;
+          this.adress = res.data.right.address;
+        }
+      });
+    },
+    saveBtnClick() {
+      let data = {
+        user_id: localStorage.getItem("userID"),
+        user_name: this.name,
+        phone: this.mobile,
+        card: this.IDCardNum,
+        education: this.schooling,
+        address: this.adress
+      };
+      UserAddindex(data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          Message({ type: "success", message: res.msg });
+        }
+      });
+    },
     linketoInfo(i) {
       if (i == 1) {
         this.$router.push({

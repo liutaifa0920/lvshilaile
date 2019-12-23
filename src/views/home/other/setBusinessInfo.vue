@@ -7,9 +7,10 @@
       </el-breadcrumb>
     </div>
     <div class="contentBox">
+      <div class="saveBtn" @click="saveClick">保 存</div>
       <el-form label-position="right" label-width="120px">
         <el-form-item class="titleBold" label="基本信息">
-          <p style="text-align: left;">完成度 {{"20%"}}</p>
+          <p v-if="currentType == 2" style="text-align: left;">完成度 {{wancheng1}}</p>
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="mobile"></el-input>
@@ -27,10 +28,14 @@
       <div class="line"></div>
       <el-form label-position="right" label-width="120px">
         <el-form-item class="titleBold" label="企业信息">
-          <p style="text-align: left;">完成度 {{"20%"}}</p>
+          <p v-if="currentType == 2" style="text-align: left;">完成度 {{wancheng2}}</p>
         </el-form-item>
         <el-form-item label="企业名称">
           <el-input v-model="comName"></el-input>
+        </el-form-item>
+        <el-form-item label="营业执照">
+          <img v-if="currentType == 2" style="width:50px;" :src="imgFile" alt />
+          <input type="file" accept="image/*" @change="imgUploadChange" />
         </el-form-item>
         <el-form-item label="所属行业">
           <el-input v-model="hangye"></el-input>
@@ -45,10 +50,10 @@
           <el-input v-model="youbian"></el-input>
         </el-form-item>
         <el-form-item label="是否上市">
-          <el-radio v-model="shangshi" :label="1">是</el-radio>
-          <el-radio v-model="shangshi" :label="2">否</el-radio>
+          <el-radio v-model="shangshi" label="1">是</el-radio>
+          <el-radio v-model="shangshi" label="2">否</el-radio>
         </el-form-item>
-        <el-form-item label="上市代码">
+        <el-form-item v-if="currentType == 1" label="上市代码">
           <el-input v-model="shangshidaima"></el-input>
         </el-form-item>
       </el-form>
@@ -56,14 +61,22 @@
   </div>
 </template>
 <script>
+import { Message } from 'element-ui';
+import { EnterpriseAddlist, EnterpriseSelEnterprise } from "@/api/api";
+import axios from "axios";
 export default {
   data() {
     return {
+      id: "",
+      wancheng1: "",
+      wancheng2: "",
+      currentType: 1,
       mobile: "",
       name: "",
       xinyongdaima: "",
       ID: "",
       comName: "",
+      imgFile: null,
       hangye: "",
       guimo: "",
       adress: "",
@@ -72,8 +85,119 @@ export default {
       shangshidaima: ""
     };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.queryType();
+  },
+  methods: {
+    queryType() {
+      this.currentType = this.$route.query.type;
+      this.id = this.$route.query.id;
+      console.log(this.id);
+      if (this.currentType == 2) {
+        this.querySettingInfo();
+      }
+    },
+    imgUploadChange(e) {
+      this.imgFile = e.target.files[0];
+    },
+    saveClick() {
+      if (this.currentType == 1) {
+        this.toAddInfo();
+      } else {
+        this.toSettingInfo();
+      }
+    },
+    toAddInfo() {
+      // let data = {
+      //   user_id: localStorage.getItem("userID"),
+      //   phone: this.mobile,
+      //   legal_person: this.name,
+      //   credit_code: this.xinyongdaima,
+      //   credit_id: this.ID,
+      //   business_name: this.comName,
+      //   image: this.imgFile,
+      //   industry: this.hangye,
+      //   enterprise_size: this.guimo,
+      //   business_address: this.adress,
+      //   postal_code: this.youbian,
+      //   is_list: this.shangshi,
+      //   listing_code: this.shangshidaima
+      // };
+      let fd = new FormData();
+      fd.append("user_id", localStorage.getItem("userID"));
+      fd.append("phone", this.mobile);
+      fd.append("legal_person", this.name);
+      fd.append("credit_code", this.xinyongdaima);
+      fd.append("credit_id", this.ID);
+      fd.append("business_name", this.comName);
+      fd.append("image", this.imgFile);
+      fd.append("industry", this.hangye);
+      fd.append("enterprise_size", this.guimo);
+      fd.append("business_address", this.adress);
+      fd.append("postal_code", this.youbian);
+      fd.append("is_list", this.shangshi);
+      fd.append("listing_code", this.shangshidaima);
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      axios
+        .post("http://www.lvshilaile.com/pc/Enterprise/addlist", fd, config)
+        .then(res => {
+          console.log(res);
+        });
+      // EnterpriseAddlist(data).then(res => {
+      //   console.log(res);
+      // });
+    },
+    querySettingInfo() {
+      let data = {
+        id: this.id
+      };
+      EnterpriseSelEnterprise(data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.wancheng1 = res.data.num;
+          this.wancheng2 = res.data.Proportion;
+          this.mobile = res.data.phone;
+          this.name = res.data.legal_person;
+          this.xinyongdaima = res.data.credit_code;
+          this.ID = res.data.credit_id;
+          this.comName = res.data.business_name;
+          this.imgFile = res.data.image;
+          this.hangye = res.data.industry;
+          this.guimo = res.data.enterprise_size;
+          this.adress = res.data.business_address;
+          this.youbian = res.data.postal_code;
+          this.shangshi = res.data.is_list;
+          this.shangshidaim = res.data.is_list;
+        }
+      });
+    },
+    toSettingInfo() {
+      let fd = new FormData();
+      fd.append("id", this.id);
+      fd.append("user_id", localStorage.getItem("userID"));
+      fd.append("phone", this.mobile);
+      fd.append("legal_person", this.name);
+      fd.append("credit_code", this.xinyongdaima);
+      fd.append("credit_id", this.ID);
+      fd.append("business_name", this.comName);
+      fd.append("image", this.imgFile);
+      fd.append("industry", this.hangye);
+      fd.append("enterprise_size", this.guimo);
+      fd.append("business_address", this.adress);
+      fd.append("postal_code", this.youbian);
+      fd.append("is_list", this.shangshi);
+      fd.append("listing_code", this.shangshidaima);
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      axios
+        .post("http://pc.lvshilaile.com/pc/Enterprise/upEnterprise", fd, config)
+        .then(res => {
+          console.log(res);
+        });}
+  }
 };
 </script>
 <style>
@@ -114,8 +238,20 @@ export default {
   width: 100%;
   padding: 50px 40px;
   border: solid 1px #eeeeee;
+  position: relative;
 }
-
+.saveBtn {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  width: 95px;
+  height: 30px;
+  background-color: #2971de;
+  border-radius: 5px;
+  color: white;
+  line-height: 30px;
+  text-align: center;
+}
 .line {
   width: 100%;
   height: 1px;
