@@ -38,8 +38,6 @@
             <input v-model="payNum" type="text" />
           </p>
           <div class="payBtn" @click="nowPayClick">立即支付</div>
-          <div id="code"></div>
-          <canvas ref="canvas" id="canvas"></canvas>
         </div>
       </div>
     </div>
@@ -61,11 +59,23 @@
         </div>
       </div>
     </div>
+    <el-dialog v-show="isPayFlag" title="提示" :visible.sync="isPayFlag" width="30%">
+      <div class="payBox">
+        <div id="code"></div>
+        <canvas ref="canvas" id="canvas"></canvas>
+        <div class="payBoxText">
+          <p>请使用微信扫一扫</p>
+          <p>扫描上方二维码支付</p>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { ServiceArticleview, OrderAdd } from "@/api/api";
+import { ServiceArticleview, OrderAdd, orderlists } from "@/api/api";
 import QRCode from "qrcode";
+import axios from "axios";
+import { Message } from "element-ui";
 export default {
   data() {
     return {
@@ -96,10 +106,14 @@ export default {
           }
         ]
       },
-      lawyerID: ""
+      lawyerID: "",
+      isPayFlag: true,
+      order_sn: "",
+      timer: null
     };
   },
   mounted() {
+    this.isPayFlag = false;
     this.queryParam();
   },
   methods: {
@@ -132,9 +146,50 @@ export default {
       OrderAdd(data).then(res => {
         console.log(res);
         if (res.code == 200) {
-          this.useqrcode(res.data);
+          this.isPayFlag = true;
+          this.order_sn = res.data.order_sn;
+          this.useqrcode(res.data.code_url);
+          this.timer = setInterval(() => {
+            this.queryOrderlists();
+          }, 500);
         }
       });
+    },
+    queryOrderlists() {
+      // let data = {
+      //   order_sn: this.order_sn,
+      //   type: 1
+      // };
+      // orderlists(data).then(res => {
+      //   if (res.code == 200) {
+      //     Message({
+      //       type: "success",
+      //       message: "支付成功"
+      //     });
+      //     clearInterval(this.timer);
+      //     this.$router.push({
+      //       path: "/order"
+      //     });
+      //   }
+      // });
+      axios
+        .post("http://www.lvshilaile.com/pc/Order/orderlists", {
+          order_sn: this.order_sn,
+          type: 1
+        })
+        .then(res => {
+          // console.log(res)
+          if (res.data.code == 200) {
+            Message({
+              type: "success",
+              message: "支付成功"
+            });
+            clearInterval(this.timer);
+            this.$router.push({
+              path: "/order"
+            });
+          }
+        });
     },
     useqrcode(url) {
       QRCode.toCanvas(this.$refs.canvas, url, function(error) {
@@ -145,6 +200,13 @@ export default {
     leftItemClick(id) {
       this.id = id;
       this.queryInfo();
+    }
+  },
+  watch: {
+    isPayFlag() {
+      if (!this.isPayFlag) {
+        clearInterval(this.timer);
+      }
     }
   }
 };
@@ -346,5 +408,16 @@ export default {
   font-weight: bold;
   padding-left: 40px;
   box-sizing: border-box;
+}
+.payBox {
+  width: 100%;
+  height: 200px;
+}
+.payBoxText {
+  background-color: #2971de;
+  color: white;
+}
+.payBoxText > p {
+  text-align: center;
 }
 </style>

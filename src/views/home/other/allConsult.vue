@@ -11,7 +11,7 @@
       class="bottomTextarea"
       type="textarea"
       placeholder="请输入咨询内容"
-      v-model="textarea"
+      v-model="problem"
       maxlength="200"
       show-word-limit
       resize="none"
@@ -19,17 +19,19 @@
     <div class="mobile">
       <p>联系方式（必填）</p>
       <div class="mobileRight">
-        <p>¥ 50</p>
-        <p>提 问</p>
+        <p>¥ {{price}}</p>
+        <p @click="nowPayClick">提 问</p>
       </div>
     </div>
     <div class="bottomInputBox">
-      <el-input class="bottomInput" v-model="input" placeholder="请输入联系方式"></el-input>
+      <el-input class="bottomInput" v-model="mobile" placeholder="请输入联系方式"></el-input>
       <div class="bottomSetFile">
         <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-change="filesUpload"
+          :beforeUpload="beforeAvatarUpload"
+          :action="action"
           multiple
         >
           <i class="el-icon-upload"></i>
@@ -37,19 +39,128 @@
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </div>
     </div>
+    <el-dialog v-show="isPayFlag" title="提示" :visible.sync="isPayFlag" width="30%">
+      <div class="payBox">
+        <div id="code"></div>
+        <canvas ref="canvas" id="canvas"></canvas>
+        <div class="payBoxText">
+          <p>请使用微信扫一扫</p>
+          <p>扫描上方二维码支付</p>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import { MoneyIndexlist } from "@/api/api";
+import QRCode from "qrcode";
+import axios from "axios";
+import { Message } from "element-ui";
+import { format } from "path";
 export default {
   data() {
-    return {};
+    return {
+      action: "https://jsonplaceholder.typicode.com/posts/",
+      price: "",
+      problem: "",
+      mobile: "",
+      files: [],
+      isPayFlag: true,
+      order_sn: "",
+      timer: null
+    };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.isPayFlag = false;
+    this.queryPrice();
+  },
+  methods: {
+    queryPrice() {
+      MoneyIndexlist().then(res => {
+        if (res.code == 200) {
+          this.price = res.data.money;
+        }
+      });
+    },
+    filesUpload(file, fileList) {
+      this.files = fileList.map(e => {
+        return e.raw;
+      });
+      console.log(this.files);
+    },
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!isLt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 10MB!",
+          type: "warning"
+        });
+      }
+      return isLt2M;
+    },
+    nowPayClick() {
+      let fd = new FormData();
+      fd.append("user_id", localStorage.getItem("userID"));
+      fd.append("mobile", this.mobile);
+      fd.append("problem", this.problem);
+      fd.append("money", this.price);
+      this.files.map(e => {
+        fd.append("img[]", e);
+      });
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      axios
+        .post("http://www.lvshilaile.com/pc/Simple/overall", fd, config)
+        .then(res => {
+          console.log(res);
+          // if (res.code == 200) {
+          //   this.isPayFlag = true;
+          //   this.order_sn = res.data.order_sn;
+          //   this.useqrcode(res.data.code_url);
+          //   this.timer = setInterval(() => {
+          //     this.queryOrderlists();
+          //   }, 500);
+          // }
+        });
+    },
+    queryOrderlists() {
+      axios
+        .post("http://www.lvshilaile.com/pc/Order/orderlists", {
+          order_sn: this.order_sn,
+          type: 1
+        })
+        .then(res => {
+          // console.log(res)
+          if (res.data.code == 200) {
+            Message({
+              type: "success",
+              message: "支付成功"
+            });
+            clearInterval(this.timer);
+            this.$router.push({
+              path: "/order"
+            });
+          }
+        });
+    },
+    useqrcode(url) {
+      QRCode.toCanvas(this.$refs.canvas, url, function(error) {
+        if (error) console.error(error);
+        console.log("QRCode success!");
+      });
+    }
+  },
+  watch: {
+    isPayFlag() {
+      if (!this.isPayFlag) {
+        clearInterval(this.timer);
+      }
+    }
+  }
 };
 </script>
 <style>
@@ -113,8 +224,8 @@ export default {
   width: 300px;
   margin-bottom: 30px;
 }
-.bottomSetFile{
-    width: 100%;
-    text-align: left;
+.bottomSetFile {
+  width: 100%;
+  text-align: left;
 }
 </style>

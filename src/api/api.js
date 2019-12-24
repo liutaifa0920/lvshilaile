@@ -183,3 +183,39 @@ export function OrderTwopay(data) {
     data
   });
 }
+// 轮询支付
+export function orderlists(data) {
+  return request({
+    url: "/pc/Order/orderlists",
+    method: "post",
+    data
+  });
+}
+// 免费咨询
+export function SimpleIndex(data) {
+  return request({
+    url: "/pc/Simple/simpleindex",
+    method: "post",
+    data
+  });
+}
+// 全面咨询价格
+export function MoneyIndexlist(data) {
+  return request({
+    url: "/pc/Money/indexlist",
+    method: "post",
+    data
+  });
+}
+// 全面咨询
+export function Simpleoverall(data) {
+  return request({
+    url: "/pc/Simple/overall",
+    method: "post",
+    data
+  });
+}
+
+
+
+

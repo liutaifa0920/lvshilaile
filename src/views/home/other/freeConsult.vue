@@ -11,30 +11,55 @@
       class="bottomTextarea"
       type="textarea"
       placeholder="请输入咨询内容"
-      v-model="textarea"
-      maxlength="200"
+      v-model="problem"
+      maxlength="20"
       show-word-limit
       resize="none"
     ></el-input>
     <div class="mobile">
       <p>联系方式（必填）</p>
-      <p>提 问</p>
+      <p @click="setSimpleIndex">提 问</p>
     </div>
     <div class="bottomInputBox">
-      <el-input class="bottomInput" v-model="input" placeholder="请输入联系方式"></el-input>
+      <el-input class="bottomInput" v-model="mobile" placeholder="请输入联系方式"></el-input>
     </div>
   </div>
 </template>
 <script>
+import { SimpleIndex } from "@/api/api";
+import { Message } from "element-ui";
 export default {
   data() {
     return {
-      textarea: "",
-      input: ""
+      problem: "",
+      mobile: ""
     };
   },
   mounted() {},
-  methods: {}
+  methods: {
+    setSimpleIndex() {
+      let data = {
+        user_id: localStorage.getItem("userID"),
+        mobile: this.mobile,
+        problem: this.problem
+      };
+      SimpleIndex(data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          Message({
+            type: "success",
+            message: res.msg
+          });
+          this.$router.push({
+            path: "/consultList",
+            query: {
+              type: 1
+            }
+          });
+        }
+      });
+    }
+  }
 };
 </script>
 <style>

@@ -39,7 +39,6 @@ service.interceptors.response.use(
 
     // 如果自定义状态码不是200则返回错误
     if (res.code !== 200) {
-      // console.log(res.message || "error");
       Message(res.msg)
 
       // 可自定义配置特殊的请求状态 如：令牌过期等特殊的状态码处理

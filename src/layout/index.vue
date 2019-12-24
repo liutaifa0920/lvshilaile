@@ -1,5 +1,5 @@
 <template>
-  <div class="defaut-layout">
+  <div class="defaut-layout" ref="root">
     <div class="layoutTitle">
       <img @click="toHome" class="layoutLogo" src="img/layout/logoWhite.png" alt="律狮来了" />
       <ul class="layoutNav">
@@ -105,18 +105,17 @@
         <img src="img/layout/电话.png" alt />
         <p>
           致电
-          <br />
-          咨询
+          <br />咨询
         </p>
       </div>
-      <div class="rightItem">
+      <div class="rightItem" @click="linkToFreeConsult">
         <img src="img/layout/1免费咨询.png" alt />
         <p>
           免费
           <br />咨询
         </p>
       </div>
-      <div class="rightItem">
+      <div class="rightItem" @click="linkToAllonsult">
         <img src="img/layout/消息.png" alt />
         <p>
           全面
@@ -127,7 +126,7 @@
         <img src="img/layout/二维码.png" alt />
         <p>小程序</p>
       </div>
-      <div class="toTop">
+      <div class="toTop" @click="toTop">
         <img src="img/layout/回到顶部.png" alt />
       </div>
     </div>
@@ -150,6 +149,7 @@ export default {
     };
   },
   mounted() {
+    window.addEventListener("scroll", this.scrollToTop);
     this.queryLogin();
     // if (localStorage.getItem("isLogin") != 1) {
     this.queryHomesuspension();
@@ -207,8 +207,19 @@ export default {
           path: "/"
         });
       } else if (i == 2) {
+        this.$router.push({
+          path: "/"
+        });
+        document.documentElement.scrollTop = 630;
       } else if (i == 3) {
+        this.$router.push({
+          path: "/"
+        });
+        document.documentElement.scrollTop = 1300;
       } else if (i == 4) {
+        this.$router.push({
+          path: "/legalAdvice"
+        });
       } else if (i == 5) {
         this.$router.push({
           path: "/about"
@@ -249,6 +260,19 @@ export default {
       this.$router.push({
         path: "/order"
       });
+    },
+    linkToFreeConsult() {
+      this.$router.push({
+        path: "/freeConsult"
+      });
+    },
+    linkToAllonsult() {
+      this.$router.push({
+        path: "/allConsult"
+      });
+    },
+    toTop() {
+      document.documentElement.scrollTop = 0;
     }
   }
 };
