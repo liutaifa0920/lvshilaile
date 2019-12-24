@@ -104,6 +104,9 @@ export default {
       };
       EnterpriseDellist(data).then(res => {
         console.log(res);
+        if (res.code == 200) {
+          this.queryInfo();
+        }
       });
     },
     addBusiness(t, id) {

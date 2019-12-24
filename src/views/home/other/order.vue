@@ -8,12 +8,13 @@
     </div>
     <div class="contentBox">
       <div class="titleList">
-        <div :class="currentType == 1 ? 'isAction':''" @click="titleClick(1)">全部订单</div>
-        <div :class="currentType == 2 ? 'isAction':''" @click="titleClick(2)">待支付</div>
-        <div :class="currentType == 3 ? 'isAction':''" @click="titleClick(3)">进行中</div>
-        <div :class="currentType == 4 ? 'isAction':''" @click="titleClick(4)">待评价</div>
-        <div :class="currentType == 5 ? 'isAction':''" @click="titleClick(5)">已完成</div>
-        <div :class="currentType == 6 ? 'isAction':''" @click="titleClick(6)">已取消</div>
+        <div :class="currentType == 0 ? 'isAction':''" @click="titleClick(0,0)">全部订单</div>
+        <div :class="currentType == 1 ? 'isAction':''" @click="titleClick(1,1)">待支付</div>
+        <div :class="currentType == 2 ? 'isAction':''" @click="titleClick(2,2)">已付款</div>
+        <div :class="currentType == 3 ? 'isAction':''" @click="titleClick(3,2)">进行中</div>
+        <div :class="currentType == 4 ? 'isAction':''" @click="titleClick(4,3)">已完成</div>
+        <div :class="currentType == 5 ? 'isAction':''" @click="titleClick(5,4)">已取消</div>
+        <div :class="currentType == 6 ? 'isAction':''" @click="titleClick(6,4)">已退款</div>
       </div>
       <div class="tableTitle">
         <div>服务项目</div>
@@ -22,31 +23,37 @@
         <div>交易状态</div>
         <div>交易操作</div>
       </div>
-      <div class="tableItem" v-for="(item, i) in 5" :key="i">
+      <div class="tableItem" v-for="(item, i) in infoList" :key="i">
         <div class="tabItemTit">
-          <p>{{"2019-10-13"}}</p>
+          <p>{{item.add_time}}</p>
           <img src="img/home/删除.png" alt />
         </div>
         <div class="tabItemCon">
           <div class="tabItemConItem">
-            <img src="img/home/timg (2).jpeg" alt />
+            <img :src="item.service_top_image" alt />
             <div class="tabItemConItem1">
-              <p>{{"商标注册"}}</p>
-              <p>¥{{"100"}}</p>
+              <p>{{item.service_name}}</p>
+              <p>¥{{item.money}}</p>
             </div>
           </div>
-          <div class="tabItemConItem">{{"0183893476750"}}</div>
-          <div class="tabItemConItem">{{"杜廷玉"}} 律师</div>
           <div class="tabItemConItem">
-            <div v-if="tabType == 1" class="typeSmall isZ">待支付</div>
-            <div v-if="tabType == 2" class="typeSmall isY">进行中</div>
-            <div v-if="tabType == 3" class="typeSmall isG">已完成</div>
-            <div v-if="tabType == 4" class="typeSmall isGa">已取消</div>
+            <p
+              style="width: 100%;word-break:break-all;padding: 0 10px;box-sizing: border-box;"
+            >{{item.order_sn}}</p>
+          </div>
+          <div class="tabItemConItem">{{item.selected_lawyer}} 律师</div>
+          <div class="tabItemConItem">
+            <div v-if="item.status == 1" class="typeSmall isZ">待支付</div>
+            <div v-if="item.status == 2" class="typeSmall isY">已付款</div>
+            <div v-if="item.status == 2" class="typeSmall isY">进行中</div>
+            <div v-if="item.status == 3" class="typeSmall isG">已完成</div>
+            <div v-if="item.status == 4" class="typeSmall isGa">已取消</div>
+            <div v-if="item.status == 4" class="typeSmall isGa">已退款</div>
           </div>
           <div class="tabItemConItem">
-            <div v-if="tabPaySet == 1" class="typeBig isBlue">立即支付</div>
-            <div v-if="tabPaySet == 2" class="typeBig isGary">取消订单</div>
-            <div v-if="tabPaySet == 3" class="typeBig isGary">申请退款</div>
+            <div v-if="tabPaySet == 1" class="typeBig isBlue">重新支付</div>
+            <div v-if="tabPaySet == 1" class="typeBig isGary">取消订单</div>
+            <div v-if="tabPaySet == 2" class="typeBig isGary">申请退款</div>
           </div>
         </div>
       </div>
@@ -54,29 +61,61 @@
       <div class="pageBox">
         <el-pagination
           background
+          :current-page="currentPage"
+          @current-change="handleCurrentChange"
           layout="prev, pager, next"
           prev-text="上一页"
           next-text="下一页"
-          :total="1000"
+          :page-size="currentSize"
+          :total="allTotal"
         ></el-pagination>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { OrderList, OrderCancel, OrderDellist, OrderTwopay } from "@/api/api";
 export default {
   data() {
     return {
-      currentType: 1,
+      currentPage: 1,
+      currentSize: 10,
+      allTotal: 0,
+      currentType: 0,
+      orderType: 0,
       tabType: 1,
-      tabPaySet: 1
+      tabPaySet: 1,
+      infoList: null
     };
   },
   mounted() {
+    this.queryListInfo();
   },
   methods: {
-    titleClick(i) {
-      this.currentType = i;
+    queryListInfo() {
+      let data = {
+        limit: this.currentSize,
+        page: this.currentPage,
+        user_id: localStorage.getItem("userID"),
+        status: this.orderType
+      };
+      OrderList(data).then(res => {
+        console.log(res.data.data);
+        if (res.code == 200) {
+          this.infoList = res.data.data;
+          this.allTotal = res.data.total;
+        }
+      });
+    },
+    handleCurrentChange(val) {
+      console.log(val);
+      this.currentPage = val;
+      this.queryListInfo();
+    },
+    titleClick(titI, i) {
+      this.currentType = titI;
+      this.orderType = i;
+      this.queryListInfo();
     }
   }
 };
@@ -110,6 +149,7 @@ export default {
   margin: 0 25px;
   line-height: 66px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 .isAction {
   color: #2971de;
@@ -201,6 +241,8 @@ export default {
   font-size: 16px;
   padding: 7px 15px;
   border-radius: 4px;
+  margin: 0 5px;
+  /* cursor: pointer; */
 }
 .isZ {
   background-color: #cd96f130;
@@ -224,6 +266,8 @@ export default {
   border: 1px solid white;
   border-radius: 5px;
   box-sizing: border-box;
+  margin: 0 5px;
+  cursor: pointer;
 }
 .isBlue {
   color: #2971de;

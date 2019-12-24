@@ -45,15 +45,15 @@
               <img :src="userImg" alt />
               <p>{{userName}}</p>
             </div>
-            <div class="itemListItem" @click="linTobussiness()">
+            <div class="itemListItem" @click="linTobussiness">
               <img src="img/home/PC信息.png" alt />
               <p>企业信息</p>
             </div>
             <div class="itemListItem">
-              <img src="img/home/PC资料.png" alt />
+              <img src="img/home/PC资料.png" @click="linkToUserInfo" alt />
               <p>我的资料</p>
             </div>
-            <div class="itemListItem" @click="linTomyInfo()">
+            <div class="itemListItem" @click="linTomyInfo">
               <img src="img/home/消息.png" alt />
               <p>我的消息</p>
             </div>
@@ -97,7 +97,7 @@
     </div>
     <!-- rightFixed -->
     <div class="layoutRightFix">
-      <div class="rightItem">
+      <div class="rightItem" @click="linkToOrder">
         <img src="img/layout/订单.png" alt />
         <p>订单</p>
       </div>
@@ -105,7 +105,8 @@
         <img src="img/layout/电话.png" alt />
         <p>
           致电
-          <br />咨询
+          <br />
+          咨询
         </p>
       </div>
       <div class="rightItem">
@@ -150,10 +151,9 @@ export default {
   },
   mounted() {
     this.queryLogin();
-    if (localStorage.getItem("isLogin") != 1) {
-      console.log(74326423746567)
-      this.queryHomesuspension();
-    }
+    // if (localStorage.getItem("isLogin") != 1) {
+    this.queryHomesuspension();
+    // }
   },
   methods: {
     // 查看是否登陆
@@ -230,6 +230,11 @@ export default {
         path: "/businessInfo"
       });
     },
+    linkToUserInfo() {
+      this.$router.push({
+        path: "/userInfo"
+      });
+    },
     linTomyInfo() {
       this.$router.push({
         path: "/myInfo"
@@ -238,6 +243,11 @@ export default {
     toLogin() {
       this.$router.push({
         path: "/login"
+      });
+    },
+    linkToOrder() {
+      this.$router.push({
+        path: "/order"
       });
     }
   }

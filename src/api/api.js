@@ -37,7 +37,6 @@ export function homeindexpage(data) {
   });
 }
 // wo消息
-
 export function homeusersimple(data) {
   return request({
     url: "/pc/News/usersimple",
@@ -143,4 +142,44 @@ export function UserAddindex(data) {
     data
   });
 }
+// 立即支付
+export function OrderAdd(data) {
+  return request({
+    url: "/pc/Order/orderadd",
+    method: "post",
+    data
+  });
+}
 
+// 订单列表
+export function OrderList(data) {
+  return request({
+    url: "/pc/Order/orderlist",
+    method: "post",
+    data
+  });
+}
+// 取消退订
+export function OrderCancel(data) {
+  return request({
+    url: "/pc/Order/cancel",
+    method: "post",
+    data
+  });
+}
+// 删除订单
+export function OrderDellist(data) {
+  return request({
+    url: "/pc/Order/dellist",
+    method: "post",
+    data
+  });
+}
+// 重新支付
+export function OrderTwopay(data) {
+  return request({
+    url: "/pc/Order/twopay",
+    method: "post",
+    data
+  });
+}

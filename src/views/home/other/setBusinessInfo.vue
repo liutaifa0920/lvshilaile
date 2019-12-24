@@ -61,7 +61,7 @@
   </div>
 </template>
 <script>
-import { Message } from 'element-ui';
+import { Message } from "element-ui";
 import { EnterpriseAddlist, EnterpriseSelEnterprise } from "@/api/api";
 import axios from "axios";
 export default {
@@ -108,21 +108,7 @@ export default {
       }
     },
     toAddInfo() {
-      // let data = {
-      //   user_id: localStorage.getItem("userID"),
-      //   phone: this.mobile,
-      //   legal_person: this.name,
-      //   credit_code: this.xinyongdaima,
-      //   credit_id: this.ID,
-      //   business_name: this.comName,
-      //   image: this.imgFile,
-      //   industry: this.hangye,
-      //   enterprise_size: this.guimo,
-      //   business_address: this.adress,
-      //   postal_code: this.youbian,
-      //   is_list: this.shangshi,
-      //   listing_code: this.shangshidaima
-      // };
+      let that = this;
       let fd = new FormData();
       fd.append("user_id", localStorage.getItem("userID"));
       fd.append("phone", this.mobile);
@@ -144,10 +130,10 @@ export default {
         .post("http://www.lvshilaile.com/pc/Enterprise/addlist", fd, config)
         .then(res => {
           console.log(res);
+          if (res.data.code == 200) {
+            that.$router.go(-1);
+          }
         });
-      // EnterpriseAddlist(data).then(res => {
-      //   console.log(res);
-      // });
     },
     querySettingInfo() {
       let data = {
@@ -174,6 +160,7 @@ export default {
       });
     },
     toSettingInfo() {
+      let that = this;
       let fd = new FormData();
       fd.append("id", this.id);
       fd.append("user_id", localStorage.getItem("userID"));
@@ -193,10 +180,18 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://pc.lvshilaile.com/pc/Enterprise/upEnterprise", fd, config)
+        .post(
+          "http://www.lvshilaile.com/pc/Enterprise/upEnterprise",
+          fd,
+          config
+        )
         .then(res => {
           console.log(res);
-        });}
+          if (res.data.code == 200) {
+            that.$router.go(-1);
+          }
+        });
+    }
   }
 };
 </script>

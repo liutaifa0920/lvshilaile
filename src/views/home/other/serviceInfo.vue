@@ -25,6 +25,7 @@
               class="topBoxRightlvshiRightItem"
               v-for="(item, i) in infoList.lawyer"
               :key="i"
+              @click="lawyerClick(item)"
             >
               <img :src="item.image" alt />
               <p>{{item.name}}</p>
@@ -36,7 +37,9 @@
             <span>联系方式</span>
             <input v-model="payNum" type="text" />
           </p>
-          <div class="payBtn">立即支付</div>
+          <div class="payBtn" @click="nowPayClick">立即支付</div>
+          <div id="code"></div>
+          <canvas ref="canvas" id="canvas"></canvas>
         </div>
       </div>
     </div>
@@ -61,10 +64,12 @@
   </div>
 </template>
 <script>
-import { ServiceArticleview } from "@/api/api";
+import { ServiceArticleview, OrderAdd } from "@/api/api";
+import QRCode from "qrcode";
 export default {
   data() {
     return {
+      id: "",
       payNum: "",
       infoList: {
         server: {
@@ -90,7 +95,8 @@ export default {
             name: "股权设计"
           }
         ]
-      }
+      },
+      lawyerID: ""
     };
   },
   mounted() {
@@ -110,6 +116,30 @@ export default {
         if (res.code == 200) {
           this.infoList = res.data;
         }
+      });
+    },
+    lawyerClick(item) {
+      console.log(item.lawyer_id);
+      this.lawyerID = item.lawyer_id;
+    },
+    nowPayClick() {
+      let data = {
+        user_id: localStorage.getItem("userID"),
+        mobile: this.payNum,
+        server_two_id: this.id,
+        lawyer_id: this.lawyerID
+      };
+      OrderAdd(data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.useqrcode(res.data);
+        }
+      });
+    },
+    useqrcode(url) {
+      QRCode.toCanvas(this.$refs.canvas, url, function(error) {
+        if (error) console.error(error);
+        console.log("QRCode success!");
       });
     },
     leftItemClick(id) {
@@ -141,7 +171,7 @@ export default {
 }
 .topBox > img {
   width: 400px;
-  height: 400px;
+  height: 398px;
 }
 .topBoxRight {
   width: 800px;

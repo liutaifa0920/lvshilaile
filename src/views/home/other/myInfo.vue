@@ -9,8 +9,8 @@
     <div class="content">
       <div class="contentLeft">
         <div class="contentLeftT">
-          <img src="img/home/timg (2).jpeg" />
-          <p>张三TOP</p>
+          <img :src="infoList.user.picture" />
+          <p>{{infoList.user.nickName}}</p>
         </div>
         <div class="contentLeftB">
           <p class="contentLeftBItem" @click="linketoInfo(1)">
@@ -28,7 +28,12 @@
         </div>
       </div>
       <div class="contentRight">
-        <div class="listItem" v-for="(item,i) in infoList" :key="i" @click="linktoMyInfoItem(item)">
+        <div
+          class="listItem"
+          v-for="(item,i) in infoList.result"
+          :key="i"
+          @click="linktoMyInfoItem(item)"
+        >
           <div class="listItemT">
             <img :src="item.image" alt />
             <div class="listItemTR">
@@ -57,10 +62,17 @@ export default {
   data() {
     return {
       userID: "",
-      infoList: []
+      infoList: {
+        result: [
+          {
+            picture: ""
+          }
+        ],
+        user: {}
+      }
     };
   },
-  mounted() {
+  created() {
     this.userID = localStorage.getItem("userID");
     this.queryInfoList();
   },
@@ -70,7 +82,7 @@ export default {
         user_id: this.userID
       };
       homeusersimple(data).then(res => {
-        console.log(res.data);
+        console.log(res);
         if (res.code == 200) {
           this.infoList = res.data;
         }
