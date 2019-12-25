@@ -53,7 +53,7 @@
             <div class="homeUnitItemCon">
               <div
                 class="homeUnitItemConList"
-                v-for="(item, i) in serviceList[0].two"
+                v-for="(item, i) in serviceList[1].two"
                 :key="i"
                 @click="serviceClick(item)"
               >
@@ -68,7 +68,7 @@
           <div class="homeUnitItemCon">
             <div
               class="homeUnitItemConList"
-              v-for="(item, i) in serviceList[0].two"
+              v-for="(item, i) in serviceList[3].two"
               :key="i"
               @click="serviceClick(item)"
             >
@@ -83,7 +83,7 @@
             <div class="homeUnitItemCon">
               <div
                 class="homeUnitItemConList"
-                v-for="(item, i) in serviceList[0].two"
+                v-for="(item, i) in serviceList[2].two"
                 :key="i"
                 @click="serviceClick(item)"
               >
@@ -97,7 +97,7 @@
             <div class="homeUnitItemCon">
               <div
                 class="homeUnitItemConList"
-                v-for="(item, i) in serviceList[0].two"
+                v-for="(item, i) in serviceList[4].two"
                 :key="i"
                 @click="serviceClick(item)"
               >

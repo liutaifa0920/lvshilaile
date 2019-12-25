@@ -151,27 +151,11 @@ export default {
           this.useqrcode(res.data.code_url);
           this.timer = setInterval(() => {
             this.queryOrderlists();
-          }, 500);
+          }, 1000);
         }
       });
     },
     queryOrderlists() {
-      // let data = {
-      //   order_sn: this.order_sn,
-      //   type: 1
-      // };
-      // orderlists(data).then(res => {
-      //   if (res.code == 200) {
-      //     Message({
-      //       type: "success",
-      //       message: "支付成功"
-      //     });
-      //     clearInterval(this.timer);
-      //     this.$router.push({
-      //       path: "/order"
-      //     });
-      //   }
-      // });
       axios
         .post("http://www.lvshilaile.com/pc/Order/orderlists", {
           order_sn: this.order_sn,

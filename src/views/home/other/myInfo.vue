@@ -22,9 +22,9 @@
           <p class="contentLeftBItem isAction" @click="linketoInfo(3)">
             <img src="img/home/消息 (1).png" /> 我的消息
           </p>
-          <p class="contentLeftBItem" @click="linketoInfo(4)">
+          <!-- <p class="contentLeftBItem" @click="linketoInfo(4)">
             <img src="img/home/PC注册会员.png" /> 注册会员
-          </p>
+          </p> -->
         </div>
       </div>
       <div class="contentRight">

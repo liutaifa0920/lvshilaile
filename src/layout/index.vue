@@ -49,18 +49,18 @@
               <img src="img/home/PC信息.png" alt />
               <p>企业信息</p>
             </div>
-            <div class="itemListItem">
-              <img src="img/home/PC资料.png" @click="linkToUserInfo" alt />
+            <div class="itemListItem" @click="linkToUserInfo">
+              <img src="img/home/PC资料.png" alt />
               <p>我的资料</p>
             </div>
             <div class="itemListItem" @click="linTomyInfo">
               <img src="img/home/消息.png" alt />
               <p>我的消息</p>
             </div>
-            <div class="itemListItem">
+            <!-- <div class="itemListItem">
               <img src="img/home/PC注册会员.png" alt />
               <p>注册会员</p>
-            </div>
+            </div> -->
           </div>
           <!-- <div class="layoutLoginMid"></div>
           <p>注册</p>-->

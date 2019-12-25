@@ -92,6 +92,8 @@ export default {
           localStorage.setItem("userID", res.data.user_id);
           localStorage.setItem("userImg", res.data.picture);
           localStorage.setItem("userName", res.data.nickName);
+          localStorage.setItem("username", this.username);
+          localStorage.setItem("userpsw", this.userpsw);
           this.$store.commit("home/SET_Islogin", true);
           this.$router.push({
             path: "/"

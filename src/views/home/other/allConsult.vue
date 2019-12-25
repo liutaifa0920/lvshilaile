@@ -31,7 +31,7 @@
           drag
           :on-change="filesUpload"
           :beforeUpload="beforeAvatarUpload"
-          :action="action"
+          action="https://api.izhujialin.com/admin/Index/IndexData"
           multiple
         >
           <i class="el-icon-upload"></i>
@@ -59,7 +59,6 @@ import { MoneyIndexlist } from "@/api/api";
 import QRCode from "qrcode";
 import axios from "axios";
 import { Message } from "element-ui";
-import { format } from "path";
 export default {
   data() {
     return {
@@ -117,21 +116,21 @@ export default {
         .post("http://www.lvshilaile.com/pc/Simple/overall", fd, config)
         .then(res => {
           console.log(res);
-          // if (res.code == 200) {
-          //   this.isPayFlag = true;
-          //   this.order_sn = res.data.order_sn;
-          //   this.useqrcode(res.data.code_url);
-          //   this.timer = setInterval(() => {
-          //     this.queryOrderlists();
-          //   }, 500);
-          // }
+          if (res.data.code == 200) {
+            this.isPayFlag = true;
+            this.order_sn = res.data.data.order_sn;
+            this.useqrcode(res.data.data.code_url);
+            this.timer = setInterval(() => {
+              this.queryOrderlists();
+            }, 1000);
+          }
         });
     },
     queryOrderlists() {
       axios
         .post("http://www.lvshilaile.com/pc/Order/orderlists", {
           order_sn: this.order_sn,
-          type: 1
+          type: 2
         })
         .then(res => {
           // console.log(res)
@@ -142,7 +141,7 @@ export default {
             });
             clearInterval(this.timer);
             this.$router.push({
-              path: "/order"
+              path: "/"
             });
           }
         });
