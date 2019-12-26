@@ -215,6 +215,15 @@ export function Simpleoverall(data) {
     data
   });
 }
+// 关于我们
+
+export function CompanyIndexpage(data) {
+  return request({
+    url: "/pc/Company/indexpage",
+    method: "post",
+    data
+  });
+}
 
 
 

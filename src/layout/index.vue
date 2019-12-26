@@ -60,7 +60,7 @@
             <!-- <div class="itemListItem">
               <img src="img/home/PC注册会员.png" alt />
               <p>注册会员</p>
-            </div> -->
+            </div>-->
           </div>
           <!-- <div class="layoutLoginMid"></div>
           <p>注册</p>-->
@@ -77,13 +77,13 @@
         <div class="layoutFooterTopList">
           <div class="layoutFooterTopListItem">
             <p class="layoutFooterTopListItemTit">关于我们</p>
-            <p class="layoutFooterTopListItemCon">了解我们</p>
-            <p class="layoutFooterTopListItemCon">加入我们</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(5)">了解我们</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(2)">加入我们</p>
           </div>
           <div class="layoutFooterTopListItem">
             <p class="layoutFooterTopListItemTit">常见问题</p>
-            <p class="layoutFooterTopListItemCon">新手帮助</p>
-            <p class="layoutFooterTopListItemCon">支付帮助</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(3)">新手帮助</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(4)">支付帮助</p>
           </div>
         </div>
       </div>
@@ -222,7 +222,20 @@ export default {
         });
       } else if (i == 5) {
         this.$router.push({
-          path: "/about"
+          path: "/about",
+          query: {
+            type: 5
+          }
+        });
+      }
+    },
+    toAboutItem(t) {
+      if (window.location.href.indexOf("about") == -1) {
+        this.$router.push({
+          path: "/about",
+          query: {
+            type: t
+          }
         });
       }
     },
@@ -297,7 +310,7 @@ export default {
 }
 /* logo */
 .layoutLogo {
-  width: 123px;
+  /* width: 123px; */
   height: 40px;
   margin-left: 50px;
   cursor: pointer;
@@ -501,7 +514,7 @@ export default {
   text-align: center;
 }
 .layoutFooterTopLogo > img {
-  width: 336px;
+  /* width: 336px; */
   height: 110px;
 }
 .layoutFooterTopList {
