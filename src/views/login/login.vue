@@ -7,7 +7,7 @@
       <img src="img/login/ren.png" alt />
       <div class="contentRight">
         <img v-if="!loginType" src="img/login/账号登录.png" alt />
-        <img v-if="loginType" src="img/login/二维码.png" alt />
+        <img v-if="loginType" src="img/login/二维码.png" @click="qrcodeLogin" alt />
         <p v-if="!loginType">扫码登录</p>
         <p>账号登录</p>
         <div class="box">
@@ -101,6 +101,10 @@ export default {
         }
       });
     },
+    qrcodeLogin() {
+      window.location.href =
+        "https://open.weixin.qq.com/connect/qrconnect?appid=wx1ea6556a23944659&redirect_uri=http://www.lvshilaile.com/pc/Wlogin/loginindex&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect";
+    },
     toHome() {
       this.$router.push({
         path: "/"
@@ -134,7 +138,7 @@ export default {
   background-color: white;
 }
 .top > img {
-  width: 122px;
+  /* width: 122px; */
   height: 40px;
   cursor: pointer;
 }

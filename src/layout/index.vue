@@ -22,6 +22,7 @@
       <div class="layoutLoginBox">
         <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
           <img src="img/layout/铃铛.png" alt="消息通知" />
+          <div class="redBall"></div>
           <div v-show="userTipMove && isLogin" class="tipList">
             <div
               class="tipListItem"
@@ -134,7 +135,9 @@
 </template>
 
 <script>
-import { homesuspension } from "@/api/api";
+import { homesuspension, NewsNewround } from "@/api/api";
+import axios from "axios";
+import { Message } from "element-ui";
 export default {
   name: "defaut-layout",
   data() {
@@ -145,7 +148,8 @@ export default {
       userID: "",
       userName: "",
       userImg: "",
-      tipArr: []
+      tipArr: [],
+      isRed: false
     };
   },
   mounted() {
@@ -153,6 +157,7 @@ export default {
     this.queryLogin();
     // if (localStorage.getItem("isLogin") != 1) {
     this.queryHomesuspension();
+    this.queryNewsNewround();
     // }
   },
   methods: {
@@ -183,6 +188,23 @@ export default {
           this.tipArr = res.data;
         }
       });
+    },
+    // 是否红点
+    queryNewsNewround() {
+      axios
+        .post("http://www.lvshilaile.com/pc/News/newround", {
+          user_id: this.userID
+        })
+        .then(res => {
+          console.log(res.data);
+          if (res.data.code == 200) {
+            this.isRed = true;
+          } else if (res.data.code == 207) {
+            this.isRed = false;
+          } else {
+            Message("请登录");
+          }
+        });
     },
     userTipMoveEnter() {
       this.userTipMove = true;
@@ -295,6 +317,15 @@ export default {
   width: 100%;
 }
 /* ---------------------- Nav ------------------- */
+.redBall {
+  background-color: red;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  position: absolute;
+  top: 18px;
+  left: 48px;
+}
 .layoutTitle {
   width: 100vw;
   height: 60px;
@@ -438,7 +469,7 @@ export default {
   width: 150px;
   background-color: white;
   z-index: 500;
-  height: 180px;
+  /* height: 180px; */
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
   border-radius: 5px 5px 0px 0px;
 }

@@ -44,6 +44,15 @@ export function homeusersimple(data) {
     data
   });
 }
+// 消息红点
+export function NewsNewround(data) {
+  return request({
+    url: "/pc/News/newround",
+    method: "post",
+    data
+  });
+}
+
 // 消息详情
 export function NewsDetails(data) {
   return request({
