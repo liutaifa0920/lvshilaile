@@ -22,7 +22,7 @@
       <div class="layoutLoginBox">
         <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
           <img src="img/layout/铃铛.png" alt="消息通知" />
-          <div class="redBall"></div>
+          <div v-show="isRed" class="redBall"></div>
           <div v-show="userTipMove && isLogin" class="tipList">
             <div
               class="tipListItem"
@@ -155,10 +155,6 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.scrollToTop);
     this.queryLogin();
-    // if (localStorage.getItem("isLogin") != 1) {
-    this.queryHomesuspension();
-    this.queryNewsNewround();
-    // }
   },
   methods: {
     // 查看是否登陆
@@ -169,12 +165,16 @@ export default {
         this.userID = localStorage.getItem("userID");
         this.userImg = localStorage.getItem("userImg");
         this.userName = localStorage.getItem("userName");
+        this.queryHomesuspension();
+        this.queryNewsNewround();
       }
       if (localStorage.getItem("isLogin") == 1) {
         this.isLogin = true;
         this.userID = localStorage.getItem("userID");
         this.userImg = localStorage.getItem("userImg");
         this.userName = localStorage.getItem("userName");
+        this.queryHomesuspension();
+        this.queryNewsNewround();
       }
     },
     // 请求铃铛消息
@@ -183,8 +183,8 @@ export default {
         user_id: this.userID
       };
       homesuspension(data).then(res => {
+        console.log(res);
         if (res.code == 200) {
-          console.log(res);
           this.tipArr = res.data;
         }
       });
