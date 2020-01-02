@@ -9,8 +9,8 @@
     <div class="content">
       <div class="contentLeft">
         <div class="contentLeftT">
-          <img :src="infoList.user.picture" />
-          <p>{{infoList.user.nickName}}</p>
+          <img :src="userImg" />
+          <p>{{userName}}</p>
         </div>
         <div class="contentLeftB">
           <p class="contentLeftBItem" @click="linketoInfo(1)">
@@ -24,11 +24,13 @@
           </p>
           <!-- <p class="contentLeftBItem" @click="linketoInfo(4)">
             <img src="img/home/PC注册会员.png" /> 注册会员
-          </p> -->
+          </p>-->
         </div>
       </div>
       <div class="contentRight">
+        <p class="noInfo">暂无消息</p>
         <div
+          v-show="infoList.result.length != 0"
           class="listItem"
           v-for="(item,i) in infoList.result"
           :key="i"
@@ -62,18 +64,18 @@ export default {
   data() {
     return {
       userID: "",
+      userImg: "",
+      userName: "",
       infoList: {
-        result: [
-          {
-            picture: ""
-          }
-        ],
+        result: [],
         user: {}
       }
     };
   },
   created() {
     this.userID = localStorage.getItem("userID");
+    this.userImg = localStorage.getItem("userImg");
+    this.userName = localStorage.getItem("userName");
     this.queryInfoList();
   },
   methods: {
@@ -82,13 +84,15 @@ export default {
         user_id: this.userID
       };
       homeusersimple(data).then(res => {
-        console.log(res);
-        if (res.code == 200) {
-          this.infoList = res.data;
+        if (res) {
+          if (res.code == 200) {
+            this.infoList = res.data;
+          }
         }
       });
     },
     linketoInfo(i) {
+      document.documentElement.scrollTop = 0;
       if (i == 1) {
         this.$router.push({
           path: "/businessInfo"
@@ -240,6 +244,10 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.noInfo {
+  font-size: 14px;
+  color: #999999;
 }
 /* page */
 .pageBox {

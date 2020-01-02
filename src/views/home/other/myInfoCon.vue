@@ -14,9 +14,15 @@
           <p>{{infoList.time}}</p>
         </div>
       </div>
-      <div class="contentQText">请问如何注册公司？需要什么材料？有哪些流程？</div>
+      <div class="contentQText">{{infoList.problem}}</div>
       <div class="contentQImg">
-        <img v-show="infoList.url" v-for="(item, i) in infoList.url" :key="i" src="img/home/timg (2).jpeg" alt />
+        <img
+          v-show="infoList.url"
+          v-for="(item, i) in infoList.url"
+          :key="i"
+          src="img/home/timg (2).jpeg"
+          alt
+        />
       </div>
       <div class="contentB">
         <img :src="infoList.image" alt />
@@ -25,8 +31,7 @@
           <p>{{infoList.replytime}}</p>
         </div>
       </div>
-      <div class="contentBQText">
-        {{infoList.reply}}</div>
+      <div class="contentBQText">{{infoList.reply}}</div>
     </div>
   </div>
 </template>

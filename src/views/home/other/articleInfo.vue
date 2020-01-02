@@ -3,8 +3,8 @@
     <div class="topBread">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>法律资讯</el-breadcrumb-item>
-        <el-breadcrumb-item>文章详情</el-breadcrumb-item>
+        <el-breadcrumb-item>新闻中心</el-breadcrumb-item>
+        <el-breadcrumb-item>新闻详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="articleInfoCon">

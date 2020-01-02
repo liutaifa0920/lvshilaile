@@ -1,7 +1,8 @@
 // home状态对象
 const state = {
   test: "a test",
-  isLogin: false
+  isLogin: false,
+  aboutType: "dsfsdfsdf"
 };
 
 // 修改
@@ -11,6 +12,9 @@ const mutations = {
   },
   SET_Islogin: (state, val) => {
     state.isLogin = val;
+  },
+  SET_AboutType: (state, val) => {
+    state.aboutType = val;
   }
 };
 

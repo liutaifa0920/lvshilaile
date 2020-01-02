@@ -33,12 +33,23 @@ export default {
       }
     };
   },
+  computed: {
+    aboutType() {
+      return this.$store.state.home.aboutType;
+    }
+  },
+  watch: {
+    aboutType() {
+      console.log("djsadjkasdkjhasjkdhkasj");
+      this.queryParam();
+    }
+  },
   mounted() {
     this.queryParam();
   },
   methods: {
     queryParam() {
-      this.type = this.$route.query.type;
+      this.type = this.aboutType;
       this.queryInfo();
     },
     queryInfo() {
@@ -46,7 +57,7 @@ export default {
         id: this.type
       };
       CompanyIndexpage(data).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.code == 200) {
           this.infoList = res.data;
         }
@@ -105,7 +116,7 @@ export default {
   /* width: 336px; */
   height: 110px;
 }
-.aboutMainTop div{
+.aboutMainTop div {
   width: 760px !important;
   box-sizing: border-box !important;
 }

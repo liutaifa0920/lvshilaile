@@ -25,10 +25,12 @@
               class="topBoxRightlvshiRightItem"
               v-for="(item, i) in infoList.lawyer"
               :key="i"
-              @click="lawyerClick(item)"
+              @click="lawyerClick(item, i)"
             >
               <img :src="item.image" alt />
-              <p>{{item.name}}</p>
+              <p
+                :style="lawyerIndex == i ? 'background-color: #2971de;color: white;border: 1px solid #2971de;' : ''"
+              >{{item.name}}</p>
             </div>
           </div>
         </div>
@@ -107,6 +109,7 @@ export default {
         ]
       },
       lawyerID: "",
+      lawyerIndex: "",
       isPayFlag: true,
       order_sn: "",
       timer: null
@@ -132,9 +135,10 @@ export default {
         }
       });
     },
-    lawyerClick(item) {
+    lawyerClick(item, i) {
       console.log(item.lawyer_id);
       this.lawyerID = item.lawyer_id;
+      this.lawyerIndex = i;
     },
     nowPayClick() {
       let data = {
@@ -292,6 +296,7 @@ export default {
   width: 100px;
   height: 135px;
   margin-right: 30px;
+  cursor: pointer;
 }
 .topBoxRightlvshiRightItem > img {
   width: 100px;
@@ -398,8 +403,8 @@ export default {
   height: 200px;
 }
 .payBoxText {
-  background-color: #2971de;
-  color: white;
+  /* background-color: #2971de; */
+  /* color: white; */
 }
 .payBoxText > p {
   text-align: center;

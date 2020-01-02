@@ -728,6 +728,7 @@ export default {
   border-bottom: 1px solid #e1e3e6;
   display: flex;
   justify-content: left;
+  cursor: pointer;
 }
 .homeNewsItemLeft {
   width: 220px;
@@ -763,5 +764,6 @@ export default {
   font-weight: bold;
   color: white;
   line-height: 48px;
+  cursor: pointer;
 }
 </style>

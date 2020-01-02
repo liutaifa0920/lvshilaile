@@ -72,7 +72,7 @@
     <router-view />
     <div class="layoutFooter">
       <div class="layoutFooterTop">
-        <div class="layoutFooterTopLogo">
+        <div @click="toHome" class="layoutFooterTopLogo">
           <img src="img/layout/logoBlue.png" alt="律狮来了" />
         </div>
         <div class="layoutFooterTopList">
@@ -101,31 +101,57 @@
       <div class="rightItem" @click="linkToOrder">
         <img src="img/layout/订单.png" alt />
         <p>订单</p>
+        <div class="hover1"></div>
       </div>
-      <div class="rightItem">
+      <div @mouseenter="rightFixedMove(1)" @mouseleave="rightFixedLeave" class="rightItem">
         <img src="img/layout/电话.png" alt />
         <p>
           致电
           <br />咨询
         </p>
+        <div v-show="enterIndex == 1" class="hover2">400-900-8255</div>
       </div>
-      <div class="rightItem" @click="linkToFreeConsult">
+      <div
+        @mouseenter="rightFixedMove(2)"
+        @mouseleave="rightFixedLeave"
+        class="rightItem"
+        @click="linkToFreeConsult"
+      >
         <img src="img/layout/1免费咨询.png" alt />
         <p>
           免费
           <br />咨询
         </p>
+        <div v-show="enterIndex == 2" class="hover3">
+          <img src="img/layout/免费咨询（悬浮）.png" alt />
+        </div>
       </div>
-      <div class="rightItem" @click="linkToAllonsult">
+      <div
+        @mouseenter="rightFixedMove(3)"
+        @mouseleave="rightFixedLeave"
+        class="rightItem"
+        @click="linkToAllonsult"
+      >
         <img src="img/layout/消息.png" alt />
         <p>
           全面
           <br />咨询
         </p>
+        <div v-show="enterIndex == 3" class="hover4">
+          <img src="img/layout/全面咨询（悬浮）.png" alt />
+        </div>
       </div>
-      <div class="rightItem">
+      <div @mouseenter="rightFixedMove(4)" @mouseleave="rightFixedLeave" class="rightItem">
         <img src="img/layout/二维码.png" alt />
         <p>小程序</p>
+        <div v-show="enterIndex == 4" class="hover5">
+          <img src="img/layout/erweima.jpg" alt />
+          <div>
+            <p>官方小程序</p>
+            <p>随时随地</p>
+            <p>轻松解疑</p>
+          </div>
+        </div>
       </div>
       <div class="toTop" @click="toTop">
         <img src="img/layout/回到顶部.png" alt />
@@ -135,6 +161,7 @@
 </template>
 
 <script>
+let Base64 = require("js-base64").Base64;
 import { homesuspension, NewsNewround } from "@/api/api";
 import axios from "axios";
 import { Message } from "element-ui";
@@ -149,7 +176,8 @@ export default {
       userName: "",
       userImg: "",
       tipArr: [],
-      isRed: false
+      isRed: false,
+      enterIndex: null
     };
   },
   mounted() {
@@ -159,7 +187,28 @@ export default {
   methods: {
     // 查看是否登陆
     queryLogin() {
-      if (this.$store.state.home.isLogin) {
+      if (window.location.href.indexOf("lvshilaile=") != -1) {
+        let tempObj = {};
+        Base64.decode(
+          window.location.href.split("#/")[0].split("lvshilaile=")[1]
+        )
+          .split("&")
+          .map(e => {
+            tempObj[e.split("=")[0]] = e.split("=")[1];
+          });
+        console.log(tempObj);
+
+        localStorage.setItem("isLogin", 1);
+        localStorage.setItem("userID", tempObj.user_id);
+        localStorage.setItem("userImg", tempObj.picture);
+        localStorage.setItem("userName", tempObj.nickName);
+        this.isLogin = true;
+        this.userID = tempObj.user_id;
+        this.userImg = tempObj.picture;
+        this.userName = tempObj.nickName;
+        this.queryHomesuspension();
+        this.queryNewsNewround();
+      } else if (this.$store.state.home.isLogin) {
         localStorage.setItem("isLogin", 1);
         this.isLogin = true;
         this.userID = localStorage.getItem("userID");
@@ -168,26 +217,28 @@ export default {
         this.queryHomesuspension();
         this.queryNewsNewround();
       }
-      if (localStorage.getItem("isLogin") == 1) {
-        this.isLogin = true;
-        this.userID = localStorage.getItem("userID");
-        this.userImg = localStorage.getItem("userImg");
-        this.userName = localStorage.getItem("userName");
-        this.queryHomesuspension();
-        this.queryNewsNewround();
-      }
+      // if (localStorage.getItem("isLogin") == 1) {
+      //   this.isLogin = true;
+      //   this.userID = localStorage.getItem("userID");
+      //   this.userImg = localStorage.getItem("userImg");
+      //   this.userName = localStorage.getItem("userName");
+      //   this.queryHomesuspension();
+      //   this.queryNewsNewround();
+      // }
     },
     // 请求铃铛消息
     queryHomesuspension() {
-      let data = {
-        user_id: this.userID
-      };
-      homesuspension(data).then(res => {
-        console.log(res);
-        if (res.code == 200) {
-          this.tipArr = res.data;
-        }
-      });
+      axios
+        .post("http://www.lvshilaile.com/pc/News/suspension", {
+          user_id: this.userID
+        })
+        .then(res => {
+          if (res) {
+            if (res.code == 200) {
+              this.tipArr = res.data;
+            }
+          }
+        });
     },
     // 是否红点
     queryNewsNewround() {
@@ -196,7 +247,7 @@ export default {
           user_id: this.userID
         })
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.code == 200) {
             this.isRed = true;
           } else if (res.data.code == 207) {
@@ -218,50 +269,63 @@ export default {
     userImgMoveLeave() {
       this.userInfoMove = false;
     },
+    rightFixedMove(i) {
+      this.enterIndex = i;
+    },
+    rightFixedLeave() {
+      this.enterIndex = null;
+    },
     toHome() {
       this.$router.push({
         path: "/"
       });
+      document.documentElement.scrollTop = 0;
     },
     layoutNavClick(i) {
       if (i == 1) {
+        document.documentElement.scrollTop = 0;
         this.$router.push({
           path: "/"
         });
       } else if (i == 2) {
+        document.documentElement.scrollTop = 0;
         this.$router.push({
           path: "/"
         });
-        document.documentElement.scrollTop = 630;
+        this.$nextTick(() => {
+          document.documentElement.scrollTop = 630;
+        });
       } else if (i == 3) {
+        document.documentElement.scrollTop = 0;
         this.$router.push({
           path: "/"
         });
-        document.documentElement.scrollTop = 1300;
+        this.$nextTick(() => {
+          document.documentElement.scrollTop = 1300;
+        });
       } else if (i == 4) {
+        document.documentElement.scrollTop = 0;
         this.$router.push({
           path: "/legalAdvice"
         });
       } else if (i == 5) {
+        document.documentElement.scrollTop = 0;
+        this.$store.commit("home/SET_AboutType", 5);
         this.$router.push({
-          path: "/about",
-          query: {
-            type: 5
-          }
+          path: "/about"
         });
       }
     },
     toAboutItem(t) {
-      if (window.location.href.indexOf("about") == -1) {
-        this.$router.push({
-          path: "/about",
-          query: {
-            type: t
-          }
-        });
-      }
+      this.$store.commit("home/SET_AboutType", t);
+      console.log(this.$store.state.home.aboutType);
+      this.$router.push({
+        path: "/about"
+      });
+      document.documentElement.scrollTop = 0;
     },
     linTomyInfoCon(item) {
+      document.documentElement.scrollTop = 0;
       console.log(item);
       this.$router.push({
         path: "/myInfoCon",
@@ -272,36 +336,43 @@ export default {
       });
     },
     linTobussiness() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/businessInfo"
       });
     },
     linkToUserInfo() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/userInfo"
       });
     },
     linTomyInfo() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/myInfo"
       });
     },
     toLogin() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/login"
       });
     },
     linkToOrder() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/order"
       });
     },
     linkToFreeConsult() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/freeConsult"
       });
     },
     linkToAllonsult() {
+      document.documentElement.scrollTop = 0;
       this.$router.push({
         path: "/allConsult"
       });
@@ -543,6 +614,7 @@ export default {
   width: 50%;
   height: 235px;
   text-align: center;
+  cursor: pointer;
 }
 .layoutFooterTopLogo > img {
   /* width: 336px; */
@@ -603,6 +675,7 @@ export default {
   box-sizing: border-box;
   text-align: center;
   cursor: pointer;
+  position: relative;
 }
 .rightItem:nth-child(1) {
   height: 100px;
@@ -633,5 +706,50 @@ export default {
 }
 .toTop > img {
   width: 30px;
+}
+.hover1,
+.hover2,
+.hover3,
+.hover4,
+.hover5 {
+  width: 260px;
+  position: absolute;
+  top: 5px;
+}
+.hover2 {
+  right: 77px;
+  width: 200px;
+  height: 100px;
+  background-image: linear-gradient(130deg, #43a7f5 0%, #8e66f3 100%),
+    linear-gradient(#ffffff, #ffffff);
+  background-blend-mode: normal, normal;
+  box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.15);
+  border-radius: 10px;
+  line-height: 100px;
+  text-align: center;
+  letter-spacing: 1px;
+  color: #feffff;
+  font-size: 18px;
+}
+.hover3,
+.hover4 {
+  right: 85px;
+}
+.hover5 {
+  right: 76px;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+  box-sizing: border-box;
+  background-color: white;
+  height: 150px;
+  background-color: #ffffff;
+  box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.15);
+  border-radius: 10px;
+}
+.hover5 > img {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
 }
 </style>

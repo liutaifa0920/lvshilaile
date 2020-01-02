@@ -40,7 +40,7 @@
         <div class="contentBQText">{{item.reply}}</div>
         <div class="line"></div>
       </div>
-      <div class="pageBox">
+      <div v-show="allTotal != 0" class="pageBox">
         <el-pagination
           background
           :current-page="currentPage"
@@ -83,10 +83,14 @@ export default {
         datastatus: this.currentType
       };
       CasesimpleSimpleindex(data).then(res => {
-        console.log(res.data.data);
-        if (res.code == 200) {
+        console.log(res.data);
+        if (res.code == 200 && this.currentType == 1) {
           this.infoList = res.data.data;
           this.allTotal = res.data.total;
+        }
+        if (res.code == 200 && this.currentType == 2) {
+          this.infoList = res.data;
+          this.allTotal = res.data.length;
         }
       });
     },

@@ -26,7 +26,7 @@
             </div>
             <div v-if="loginType" class="rightRinp">
               <img src="img/login/密码.png" alt />
-              <input v-model="userpsw" placeholder="请输入身份证后6位" type="text" />
+              <input v-model="userpsw" placeholder="请输入身份证后6位" type="password" />
             </div>
             <div v-if="loginType" class="checkBox">
               <el-checkbox v-model="rememberPsw">记住密码</el-checkbox>
@@ -60,27 +60,15 @@ export default {
     };
   },
   mounted() {
-    // this.queryEr();
     if (localStorage.getItem("rememberPsw") == "true") {
       this.username = localStorage.getItem("username");
       this.userpsw = localStorage.getItem("userpsw");
       console.log(localStorage.getItem("rememberPsw"));
       this.rememberPsw = true;
     }
+    this.isLoginFun();
   },
   methods: {
-    // queryEr() {
-    //   this.ErObj = new WxLogin({
-    //     self_redirect: true,
-    //     id: "erweima",
-    //     appid: "",
-    //     scope: "snsapi_login",
-    //     redirect_uri: "",
-    //     state: "",
-    //     style: "",
-    //     href: ""
-    //   });
-    // },
     login() {
       let data = {
         phone: this.username,
@@ -109,10 +97,8 @@ export default {
       this.$router.push({
         path: "/"
       });
-    }
-  },
-  watch: {
-    rememberPsw() {
+    },
+    isLoginFun() {
       if (this.rememberPsw) {
         localStorage.setItem("username", this.username);
         localStorage.setItem("userpsw", this.userpsw);
@@ -122,6 +108,11 @@ export default {
         localStorage.setItem("userpsw", "no");
         localStorage.setItem("rememberPsw", false);
       }
+    }
+  },
+  watch: {
+    rememberPsw() {
+      this.isLoginFun();
     }
   }
 };
