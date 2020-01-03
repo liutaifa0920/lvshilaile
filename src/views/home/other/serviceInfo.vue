@@ -39,7 +39,8 @@
             <span>联系方式</span>
             <input v-model="payNum" type="text" />
           </p>
-          <div class="payBtn" @click="nowPayClick">立即支付</div>
+          <div v-show="isLogin" class="payBtn" @click="nowPayClick">立即支付</div>
+          <div v-show="!isLogin" class="noLoginPayBtn" @click="toLogin">未登陆, 请先登录</div>
         </div>
       </div>
     </div>
@@ -112,10 +113,15 @@ export default {
       lawyerIndex: "",
       isPayFlag: true,
       order_sn: "",
-      timer: null
+      timer: null,
+      isLogin: false
     };
   },
   mounted() {
+    if (localStorage.getItem("isLogin") == 1) {
+      this.isLogin = true;
+    }
+    console.log(this.isLogin);
     this.isPayFlag = false;
     this.queryParam();
   },
@@ -132,6 +138,7 @@ export default {
         console.log(res.data);
         if (res.code == 200) {
           this.infoList = res.data;
+          this.lawyerID = res.data.lawyer[0].lawyer_id;
         }
       });
     },
@@ -173,9 +180,11 @@ export default {
               message: "支付成功"
             });
             clearInterval(this.timer);
-            this.$router.push({
-              path: "/order"
-            });
+            setTimeout(() => {
+              this.$router.push({
+                path: "/order"
+              });
+            }, 2000);
           }
         });
     },
@@ -188,6 +197,11 @@ export default {
     leftItemClick(id) {
       this.id = id;
       this.queryInfo();
+    },
+    toLogin() {
+      this.$router.push({
+        path: "/login"
+      });
     }
   },
   watch: {
@@ -354,6 +368,16 @@ export default {
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
+}
+.noLoginPayBtn {
+  width: 200px;
+  height: 40px;
+  color: white;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #aaa !important;
 }
 
 .bottom {

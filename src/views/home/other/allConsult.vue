@@ -140,9 +140,11 @@ export default {
               message: "支付成功"
             });
             clearInterval(this.timer);
-            this.$router.push({
-              path: "/"
-            });
+            setTimeout(() => {
+              this.$router.push({
+                path: "/"
+              });
+            }, 2000);
           }
         });
     },

@@ -123,7 +123,8 @@
           <br />咨询
         </p>
         <div v-show="enterIndex == 2" class="hover3">
-          <img src="img/layout/免费咨询（悬浮）.png" alt />
+          <img v-show="isLogin && enterIndex == 2" src="img/layout/免费咨询（悬浮）.png" alt />
+          <div class="noLoginTip" v-show="!isLogin && enterIndex == 2">用户未登录,请先登录</div>
         </div>
       </div>
       <div
@@ -138,7 +139,8 @@
           <br />咨询
         </p>
         <div v-show="enterIndex == 3" class="hover4">
-          <img src="img/layout/全面咨询（悬浮）.png" alt />
+          <img v-show="isLogin && enterIndex == 3" src="img/layout/全面咨询（悬浮）.png" alt />
+          <div class="noLoginTip" v-show="!isLogin && enterIndex == 3">用户未登录,请先登录</div>
         </div>
       </div>
       <div @mouseenter="rightFixedMove(4)" @mouseleave="rightFixedLeave" class="rightItem">
@@ -216,15 +218,14 @@ export default {
         this.userName = localStorage.getItem("userName");
         this.queryHomesuspension();
         this.queryNewsNewround();
+      } else if (localStorage.getItem("isLogin") == 1) {
+        this.isLogin = true;
+        this.userID = localStorage.getItem("userID");
+        this.userImg = localStorage.getItem("userImg");
+        this.userName = localStorage.getItem("userName");
+        this.queryHomesuspension();
+        this.queryNewsNewround();
       }
-      // if (localStorage.getItem("isLogin") == 1) {
-      //   this.isLogin = true;
-      //   this.userID = localStorage.getItem("userID");
-      //   this.userImg = localStorage.getItem("userImg");
-      //   this.userName = localStorage.getItem("userName");
-      //   this.queryHomesuspension();
-      //   this.queryNewsNewround();
-      // }
     },
     // 请求铃铛消息
     queryHomesuspension() {
@@ -360,22 +361,34 @@ export default {
       });
     },
     linkToOrder() {
-      document.documentElement.scrollTop = 0;
-      this.$router.push({
-        path: "/order"
-      });
+      if (this.isLogin) {
+        document.documentElement.scrollTop = 0;
+        this.$router.push({
+          path: "/order"
+        });
+      } else {
+        this.toLogin();
+      }
     },
     linkToFreeConsult() {
-      document.documentElement.scrollTop = 0;
-      this.$router.push({
-        path: "/freeConsult"
-      });
+      if (this.isLogin) {
+        document.documentElement.scrollTop = 0;
+        this.$router.push({
+          path: "/freeConsult"
+        });
+      } else {
+        this.toLogin();
+      }
     },
     linkToAllonsult() {
-      document.documentElement.scrollTop = 0;
-      this.$router.push({
-        path: "/allConsult"
-      });
+      if (this.isLogin) {
+        document.documentElement.scrollTop = 0;
+        this.$router.push({
+          path: "/allConsult"
+        });
+      } else {
+        this.toLogin();
+      }
     },
     toTop() {
       document.documentElement.scrollTop = 0;
@@ -734,6 +747,7 @@ export default {
 .hover3,
 .hover4 {
   right: 85px;
+  height: 100px;
 }
 .hover5 {
   right: 76px;
@@ -751,5 +765,14 @@ export default {
   width: 100px;
   height: 100px;
   margin-right: 20px;
+}
+.noLoginTip {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  line-height: 100px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.15);
 }
 </style>
