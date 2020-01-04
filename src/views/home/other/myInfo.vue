@@ -43,7 +43,7 @@
               <p>{{item.time}}</p>
             </div>
           </div>
-          <div class="listItemB">{{item.reply}}</div>
+          <div v-show="item.reply" class="listItemB">{{item.reply}}</div>
         </div>
         <!-- <div class="pageBox">
           <el-pagination
@@ -77,6 +77,7 @@ export default {
     this.userImg = localStorage.getItem("userImg");
     this.userName = localStorage.getItem("userName");
     this.queryInfoList();
+    document.documentElement.scrollTop = 0;
   },
   methods: {
     queryInfoList() {
@@ -86,6 +87,7 @@ export default {
       homeusersimple(data).then(res => {
         if (res) {
           if (res.code == 200) {
+            console.log(res.data);
             this.infoList = res.data;
           }
         }

@@ -13,10 +13,11 @@
         <div class="box">
           <div class="Rightleft">
             <img src="img/login/erweima.jpg" alt />
-            <p>
-              扫码授权，完善信息
-              <br />即可获取账号和密码
-            </p>
+            <div class="qrcodeInfo">
+              <p>扫码授权，完善信息</p>
+              <p>即可获取账号和密码</p>
+              <p>或点击右上角扫码登陆</p>
+            </div>
           </div>
           <div class="RightRight">
             <!-- <div id="erweima"></div> -->
@@ -186,15 +187,15 @@ export default {
   height: 160px;
   margin-bottom: 17px;
 }
-.Rightleft > p {
-  width: 160px;
+.qrcodeInfo > p {
+  width: 170px;
   margin: 0 auto;
   white-space: nowrap;
   font-size: 16px;
   font-weight: bold;
   letter-spacing: 1px;
   color: #2971de;
-  text-align: left;
+  text-align: center;
 }
 .RightRight {
   width: 350px;

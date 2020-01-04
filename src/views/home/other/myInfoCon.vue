@@ -16,22 +16,16 @@
       </div>
       <div class="contentQText">{{infoList.problem}}</div>
       <div class="contentQImg">
-        <img
-          v-show="infoList.url"
-          v-for="(item, i) in infoList.url"
-          :key="i"
-          src="img/home/timg (2).jpeg"
-          alt
-        />
+        <img v-show="infoList.url" v-for="(item, i) in infoList.url" :key="i" :src="item" alt />
       </div>
-      <div class="contentB">
+      <div v-show="infoList.reply" class="contentB">
         <img :src="infoList.image" alt />
         <div class="contentBR">
           <p>{{infoList.definition}} 律师</p>
           <p>{{infoList.replytime}}</p>
         </div>
       </div>
-      <div class="contentBQText">{{infoList.reply}}</div>
+      <div v-show="infoList.reply" class="contentBQText">{{infoList.reply}}</div>
     </div>
   </div>
 </template>
@@ -46,6 +40,7 @@ export default {
     };
   },
   mounted() {
+    document.documentElement.scrollTop = 0;
     this.queryParam();
   },
   methods: {
