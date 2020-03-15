@@ -45,6 +45,7 @@ export default {
     };
   },
   mounted() {
+    document.documentElement.scrollTop = 0;
     this.queryListInfo();
   },
   methods: {

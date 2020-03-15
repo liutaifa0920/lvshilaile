@@ -9,14 +9,14 @@
     </div>
     <div class="articleInfoCon">
       <p class="articleInfoConTit">{{infoList.article.title}}</p>
-      <div class="articleInfoConFrom">
+      <!-- <div class="articleInfoConFrom">
         <div class="articleInfoConLeft">{{infoList.article.abstract}}</div>
         <div class="articleInfoConB"></div>
         <div class="articleInfoConRight">
           <img src="img/home/眼睛.png" />
           <p>{{infoList.article.browse_num}}</p>
         </div>
-      </div>
+      </div>-->
       <div class="Titline"></div>
       <div class="artCon" v-html="infoList.article.content"></div>
       <div class="beforeNextBtn">
@@ -59,6 +59,7 @@ export default {
     };
   },
   mounted() {
+    document.documentElement.scrollTop = 0;
     this.queryParam();
   },
   methods: {

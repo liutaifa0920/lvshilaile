@@ -19,7 +19,7 @@
       <div class="tableTitle">
         <div>服务项目</div>
         <div>订单编号</div>
-        <div>所选律师</div>
+        <!-- <div>所选律师</div> -->
         <div>交易状态</div>
         <div>交易操作</div>
       </div>
@@ -41,7 +41,7 @@
               style="width: 100%;word-break:break-all;padding: 0 10px;box-sizing: border-box;"
             >{{item.order_sn}}</p>
           </div>
-          <div class="tabItemConItem">{{item.selected_lawyer}} 律师</div>
+          <!-- <div class="tabItemConItem">{{item.selected_lawyer}} 律师</div> -->
           <div class="tabItemConItem">
             <div v-if="item.status == 1" class="typeSmall isZ">待支付</div>
             <div v-if="item.status == 2" class="typeSmall isY">已付款</div>
@@ -307,7 +307,7 @@ export default {
   height: 140px;
   width: 100%;
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
 }
 .tabItemConItem {
   display: flex;
@@ -338,20 +338,20 @@ export default {
   font-size: 14px;
 }
 .tabItemConItem:nth-child(2) {
-  width: 214px;
+  width: 24%;
   border-right: 1px solid #eeeeee;
 }
 .tabItemConItem:nth-child(3) {
-  width: 214px;
+  width: 24%;
   border-right: 1px solid #eeeeee;
 }
 .tabItemConItem:nth-child(4) {
-  width: 214px;
-  border-right: 1px solid #eeeeee;
+  width: 26%;
+  /* border-right: 1px solid #eeeeee; */
 }
-.tabItemConItem:nth-child(5) {
+/* .tabItemConItem:nth-child(5) {
   width: 278px;
-}
+} */
 .typeSmall {
   font-size: 16px;
   padding: 7px 15px;

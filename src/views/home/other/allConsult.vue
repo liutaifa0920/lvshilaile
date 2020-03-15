@@ -12,7 +12,6 @@
       type="textarea"
       placeholder="请输入咨询内容"
       v-model="problem"
-      maxlength="200"
       show-word-limit
       resize="none"
     ></el-input>
@@ -36,7 +35,7 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
-            将文件拖到此处，或
+            为了更好的答复您, 请将相关材料拖到此处，或
             <em>点击上传</em>
           </div>
         </el-upload>
@@ -123,6 +122,11 @@ export default {
             this.timer = setInterval(() => {
               this.queryOrderlists();
             }, 1000);
+          } else {
+            Message({
+              type: "warning",
+              message: res.data.msg
+            });
           }
         });
     },

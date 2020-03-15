@@ -8,7 +8,7 @@
     </div>
     <div class="consultListTit">
       <div :class="currentType == 1 ? 'isAction':''" @click="titleClick(1)">免费咨询</div>
-      <div :class="currentType == 2 ? 'isAction':''" @click="titleClick(2)">全面资讯</div>
+      <div :class="currentType == 2 ? 'isAction':''" @click="titleClick(2)">全面咨询</div>
     </div>
 
     <div class="contentBox">

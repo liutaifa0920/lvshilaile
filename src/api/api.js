@@ -20,6 +20,14 @@ export function homelogin(data) {
     data
   });
 }
+// 注册
+export function homeRegist(data) {
+  return request({
+    url: "/pc/Wlogin/reglogin",
+    method: "post",
+    data
+  });
+}
 // 铃铛消息
 export function homesuspension(data) {
   return request({
@@ -29,6 +37,15 @@ export function homesuspension(data) {
   });
 }
 // ---------------------- Home --------------------------- //
+// 律师详情
+export function homeTeamArticleview(data) {
+  return request({
+    url: "pc/Team/articleview",
+    method: "post",
+    data
+  });
+}
+
 export function homeindexpage(data) {
   return request({
     url: "/pc/home/indexpage",

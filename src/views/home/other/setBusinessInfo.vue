@@ -21,9 +21,9 @@
         <el-form-item label="信用代码">
           <el-input v-model="xinyongdaima"></el-input>
         </el-form-item>
-        <el-form-item label="账号ID">
+        <!-- <el-form-item label="账号ID">
           <el-input v-model="ID"></el-input>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
       <div class="line"></div>
       <el-form label-position="right" label-width="120px">
@@ -131,7 +131,16 @@ export default {
         .then(res => {
           console.log(res);
           if (res.data.code == 200) {
+            Message({
+              type: "success",
+              message: res.data.msg
+            });
             that.$router.go(-1);
+          } else {
+            Message({
+              type: "warning",
+              message: res.data.msg
+            });
           }
         });
     },
@@ -188,7 +197,16 @@ export default {
         .then(res => {
           console.log(res);
           if (res.data.code == 200) {
+            Message({
+              type: "success",
+              message: res.data.msg
+            });
             that.$router.go(-1);
+          } else {
+            Message({
+              type: "warning",
+              message: res.data.msg
+            });
           }
         });
     }

@@ -12,7 +12,6 @@
       type="textarea"
       placeholder="请输入咨询内容"
       v-model="problem"
-      maxlength="20"
       show-word-limit
       resize="none"
     ></el-input>

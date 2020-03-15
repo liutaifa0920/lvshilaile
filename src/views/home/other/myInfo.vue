@@ -20,7 +20,7 @@
             <img src="img/home/PC资料.png" /> 我的资料
           </p>
           <p class="contentLeftBItem isAction" @click="linketoInfo(3)">
-            <img src="img/home/消息 (1).png" /> 我的消息
+            <img src="img/home/消息 (1).png" /> 我的咨询
           </p>
           <!-- <p class="contentLeftBItem" @click="linketoInfo(4)">
             <img src="img/home/PC注册会员.png" /> 注册会员

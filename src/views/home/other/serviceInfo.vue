@@ -17,7 +17,7 @@
           <p>价格</p>
           <p>¥{{infoList.server.money}}</p>
         </div>
-        <div class="topBoxRightlvshi">
+        <!-- <div class="topBoxRightlvshi">
           <p>服务律师</p>
           <div class="topBoxRightlvshiRight">
             <div
@@ -33,13 +33,13 @@
               >{{item.name}}</p>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="topBoxRightlianxi">
-          <p>
+          <!-- <p>
             <span>联系方式</span>
             <input v-model="payNum" type="text" />
-          </p>
-          <div v-show="isLogin" class="payBtn" @click="nowPayClick">立即支付</div>
+          </p>-->
+          <div v-show="isLogin" class="payBtn" @click="trueSeeClick">立即支付</div>
           <div v-show="!isLogin" class="noLoginPayBtn" @click="toLogin">未登陆, 请先登录</div>
         </div>
       </div>
@@ -69,6 +69,20 @@
         <div class="payBoxText">
           <p>请使用微信扫一扫</p>
           <p>扫描上方二维码支付</p>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog v-show="isTrueFlag" title="填写并核对服务订单信息" :visible.sync="isTrueFlag" width="30%">
+      <div class="trueBox">
+        <div class="trueBoxItem">服务名称 : {{infoList.server.name}}</div>
+        <div class="trueBoxItem">服务价格 : ¥{{infoList.server.money}}</div>
+        <div class="trueBoxItem">
+          <span>联系方式 :</span>
+          <el-input v-model="payNum" type="text" placeholder="请输入手机号" />
+        </div>
+        <div class="trueBoxBtn">
+          <el-button class="trueBoxBtnItem" @click="isNoTrueclick">取消</el-button>
+          <el-button class="trueBoxBtnItem" @click="nowPayClick" type="primary">确认</el-button>
         </div>
       </div>
     </el-dialog>
@@ -114,7 +128,8 @@ export default {
       isPayFlag: true,
       order_sn: "",
       timer: null,
-      isLogin: false
+      isLogin: false,
+      isTrueFlag: false
     };
   },
   mounted() {
@@ -146,6 +161,13 @@ export default {
       console.log(item.lawyer_id);
       this.lawyerID = item.lawyer_id;
       this.lawyerIndex = i;
+    },
+    trueSeeClick() {
+      this.isTrueFlag = true;
+    },
+    isNoTrueclick() {
+      this.payNum = "";
+      this.isTrueFlag = false;
     },
     nowPayClick() {
       let data = {
@@ -179,6 +201,7 @@ export default {
               type: "success",
               message: "支付成功"
             });
+            this.isTrueFlag = false;
             clearInterval(this.timer);
             setTimeout(() => {
               this.$router.push({
@@ -227,19 +250,19 @@ export default {
 
 .topBox {
   width: 1200px;
-  height: 400px;
+  height: 300px;
   display: flex;
   border: solid 1px #e1e3e6;
   box-sizing: border-box;
   margin-bottom: 50px;
 }
 .topBox > img {
-  width: 400px;
-  height: 398px;
+  width: 300px;
+  height: 300px;
 }
 .topBoxRight {
-  width: 800px;
-  height: 400px;
+  width: 900px;
+  height: 300px;
 }
 .topBoxRightTop {
   height: 63px;
@@ -331,7 +354,7 @@ export default {
 .topBoxRightlianxi {
   height: 50px;
   padding: 0 35px;
-  margin-top: 20px;
+  margin-top: 40px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -432,5 +455,33 @@ export default {
 }
 .payBoxText > p {
   text-align: center;
+}
+.trueBox {
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
+}
+.trueBoxItem {
+  margin-bottom: 20px;
+  font-size: 16px;
+  display: flex;
+  justify-content: flex-start;
+}
+.trueBoxItem input {
+  padding: 0 10px;
+}
+.trueBoxItem span {
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 38px;
+  margin-right: 10px;
+}
+.trueBoxBtn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.trueBoxBtnItem {
+  margin: 0 15px;
 }
 </style>

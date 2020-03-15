@@ -25,6 +25,12 @@ const routes = [
         name: "Home",
         component: () => import("@/views/home/index.vue")
       },
+      // 律师详情
+      {
+        path: "/serviceNameInfo",
+        name: "serviceNameInfo",
+        component: () => import("@/views/home/other/serviceNameInfo.vue")
+      },
       // 免费咨询
       {
         path: "/freeConsult",

@@ -34,12 +34,12 @@
       <div class="homeUnit">
         <div class="homeUnitItem">
           <div class="homeUnitItemLeftT">
-            <img :src="serviceList[0].img" alt />
-            <p>{{serviceList[0].name}}</p>
+            <img :src="serviceList[4].img" alt />
+            <p>{{serviceList[4].name}}</p>
             <div class="homeUnitItemCon">
               <div
                 class="homeUnitItemConList"
-                v-for="(item, i) in serviceList[0].two"
+                v-for="(item, i) in serviceList[4].two"
                 :key="i"
                 @click="serviceClick(item)"
               >
@@ -92,12 +92,12 @@
             </div>
           </div>
           <div class="homeUnitItemRigB">
-            <img :src="serviceList[4].img" alt />
-            <p>{{serviceList[4].name}}</p>
+            <img :src="serviceList[0].img" alt />
+            <p>{{serviceList[0].name}}</p>
             <div class="homeUnitItemCon">
               <div
                 class="homeUnitItemConList"
-                v-for="(item, i) in serviceList[4].two"
+                v-for="(item, i) in serviceList[0].two"
                 :key="i"
                 @click="serviceClick(item)"
               >
@@ -110,24 +110,31 @@
     </div>
     <!-- team -->
     <div class="homeTeam">
-      <p class="homeItemTit">Team 律师团队</p>
+      <p class="homeItemTit">Team 法虎队</p>
       <div class="homeItemTitLine"></div>
 
-      <el-carousel ref="carouselTeam" indicator-position="outside" arrow="never">
-        <el-carousel-item v-for="(item, i) in teamList.count" :key="i">
+      <el-carousel ref="carouselTeam" indicator-position="outside" arrow="never" :interval="4000">
+        <el-carousel-item v-for="(item, i) in teamList" :key="i">
           <div class="homeTeamBox">
-            <div class="homeTeamBoxItem" v-for="(items,index) in teamList.result" :key="index">
+            <div
+              class="homeTeamBoxItem"
+              @click="toServiceNameInfo(items.id)"
+              v-for="(items,index) in item"
+              :key="index"
+            >
               <img :src="items.image" alt />
-              <p class="homeTeamBoxItemCName">{{items.name}} 律师</p>
-              <div class="homeTeamBoxItemC1">
+              <p class="homeTeamBoxItemCName">{{items.name}}</p>
+              <!-- <div class="homeTeamBoxItemC1">
                 <p>毕业院校</p>
                 <p>{{items.school}}</p>
-              </div>
+              </div>-->
               <div class="homeTeamBoxItemC2">
                 <p>擅长领域</p>
-                <p>{{items.server_two_name}}</p>
+                <p>{{items.server_two_name.length > 30 ? items.server_two_name.substr(0, 30)+"..." : items.server_two_name}}</p>
               </div>
             </div>
+            <div class="homeTeamBoxItemBlock"></div>
+            <div class="homeTeamBoxItemBlock"></div>
           </div>
         </el-carousel-item>
       </el-carousel>
@@ -214,7 +221,7 @@ export default {
           name: ""
         }
       ],
-      teamList: {},
+      teamList: [],
       consultationList: {
         simple: {
           problem: "",
@@ -251,7 +258,17 @@ export default {
         this.swipeList = res.data.broadcast;
         this.swipeBottomList = res.data.servertwo;
         this.serviceList = res.data.serverone;
-        this.teamList = res.data.team;
+        // this.teamList = res.data.team.result;
+        for (let i = 0; i < Math.ceil(res.data.team.result.length / 3); i++) {
+          let tempArr = [];
+          for (let j = i * 3; j < (i + 1) * 3; j++) {
+            if (res.data.team.result[j]) {
+              tempArr.push(res.data.team.result[j]);
+            }
+          }
+          this.teamList.push(tempArr);
+        }
+        console.log(this.teamList);
         this.consultationList = res.data.simple;
         this.articleList = res.data.article;
       });
@@ -289,6 +306,15 @@ export default {
         path: "/articleInfo",
         query: {
           id: item.id
+        }
+      });
+    },
+    // 律师详情
+    toServiceNameInfo(id) {
+      this.$router.push({
+        path: "/serviceNameInfo",
+        query: {
+          id
         }
       });
     },
@@ -579,6 +605,7 @@ export default {
   height: 450px;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 .homeTeamBoxItem {
   width: 360px;
@@ -590,6 +617,13 @@ export default {
   transition: 0.4s;
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0);
   cursor: pointer;
+}
+.homeTeamBoxItemBlock {
+  width: 360px;
+  height: 0px;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  background-color: transparent;
 }
 .homeTeamBoxItem > img {
   width: 150px;

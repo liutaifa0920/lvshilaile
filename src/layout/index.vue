@@ -34,7 +34,7 @@
               <p>{{item.time}}</p>
             </div>
             <div class="moreTip" @click="linTomyInfo()">
-              <p>查看全部 ></p>
+              <p>查看全部咨询 ></p>
             </div>
           </div>
         </div>
@@ -56,12 +56,12 @@
             </div>
             <div class="itemListItem" @click="linTomyInfo">
               <img src="img/home/消息.png" alt />
-              <p>我的消息</p>
+              <p>我的咨询</p>
             </div>
-            <!-- <div class="itemListItem">
+            <div @click="logOut" class="itemListItem">
               <img src="img/home/PC注册会员.png" alt />
-              <p>注册会员</p>
-            </div>-->
+              <p>退出登录</p>
+            </div>
           </div>
           <!-- <div class="layoutLoginMid"></div>
           <p>注册</p>-->
@@ -86,14 +86,25 @@
             <p class="layoutFooterTopListItemCon" @click="toAboutItem(3)">新手帮助</p>
             <p class="layoutFooterTopListItemCon" @click="toAboutItem(4)">支付帮助</p>
           </div>
+          <div class="layoutFooterTopListItem">
+            <p class="layoutFooterTopListItemTit">友情链接</p>
+            <p v-for="(item, i) in youqingList" :key="i" class="layoutFooterTopListItemCon">
+              <span @click="youqingLink(item.addres)">{{item.name}}</span>
+            </p>
+          </div>
         </div>
       </div>
       <div class="layoutFooterBot">
+        <p>
+          <img src="img/layout/ghs.png" alt="国徽" />京公网安备 11010502035663号 备案网
+          <a
+            style="padding-left:5px;"
+            target="_blank"
+            href="http://www.beian.miit.gov.cn"
+          >http://www.beian.miit.gov.cn</a>
+        </p>
         <p>北京律狮科技有限公司，备案号 京ICP备18043352号</p>
         <p>技术支持：北京律狮科技有限公司</p>
-        <p>
-          <img src="img/layout/ghs.png" alt="国徽" />京公网安备 11010502035663号
-        </p>
       </div>
     </div>
     <!-- rightFixed -->
@@ -164,7 +175,7 @@
 
 <script>
 let Base64 = require("js-base64").Base64;
-import { homesuspension, NewsNewround } from "@/api/api";
+import { homesuspension, NewsNewround, homeindexpage } from "@/api/api";
 import axios from "axios";
 import { Message } from "element-ui";
 export default {
@@ -179,14 +190,36 @@ export default {
       userImg: "",
       tipArr: [],
       isRed: false,
-      enterIndex: null
+      enterIndex: null,
+      youqingList: []
     };
   },
   mounted() {
     window.addEventListener("scroll", this.scrollToTop);
     this.queryLogin();
+    this.queryHomeInfo();
   },
   methods: {
+    youqingLink(l) {
+      window.open(l, "top");
+    },
+    // 请求首页信息
+    queryHomeInfo() {
+      homeindexpage().then(res => {
+        console.log(res.data);
+        this.youqingList = res.data.youqing;
+      });
+    },
+    // 退出登录
+    logOut() {
+      localStorage.clear();
+      this.isLogin = false;
+      window.location.href = "http://www.lvshilaile.com/lawtiger/#/layout/home";
+      Message({ type: "success", message: "已退出登录" });
+      // this.$router.push({
+      //   path: "/login"
+      // });
+    },
     // 查看是否登陆
     queryLogin() {
       if (window.location.href.indexOf("lvshilaile=") != -1) {
@@ -426,7 +459,7 @@ export default {
 /* logo */
 .layoutLogo {
   /* width: 123px; */
-  height: 40px;
+  height: 50px;
   margin-left: 50px;
   cursor: pointer;
 }
@@ -624,29 +657,35 @@ export default {
   display: flex;
 }
 .layoutFooterTopLogo {
-  width: 50%;
+  width: 40%;
   height: 235px;
   text-align: center;
   cursor: pointer;
 }
 .layoutFooterTopLogo > img {
   /* width: 336px; */
-  height: 110px;
+  height: 150px;
 }
 .layoutFooterTopList {
-  width: 50%;
+  width: 60%;
   height: 235px;
-  padding: 0 172px;
+  padding: 0 2px;
   box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* justify-content: flex-start; */
 }
 .layoutFooterTopListItem {
   text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
 }
 .layoutFooterTopListItemTit {
   font-size: 16px;
   font-weight: 600;
+  white-space: nowrap;
 }
 .layoutFooterTopListItem > p {
   line-height: 48px;
@@ -654,7 +693,12 @@ export default {
 .layoutFooterTopListItemCon {
   font-size: 14px;
   cursor: pointer;
+  margin-left: 20px;
+  white-space: nowrap;
 }
+/* .layoutFooterTopListItemCon:nth-child(10) {
+  margin-left: 83px;
+} */
 .layoutFooterBot {
   font-size: 14px;
   margin-top: 49px;
