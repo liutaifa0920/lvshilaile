@@ -1,8 +1,23 @@
 <template>
   <div class="defaut-layout" ref="root">
-    <div class="layoutTitle">
-      <img @click="toHome" class="layoutLogo" src="img/layout/logoWhite.png" alt="律狮来了" />
-      <ul class="layoutNav">
+    <div class="layoutTitle" ref="layoutTitle">
+      <div class="layoutLogoBox">
+        <img
+          style="width:136px;height:62px;"
+          @click="toHome"
+          class="layoutLogo"
+          src="img/layout/logoWhite.png"
+          alt="律狮来了"
+        />
+        <img
+          style="width:135px;height:44px;margin-left: 30px !important;"
+          @click="toHome"
+          class="layoutLogo"
+          src="img/layout/logoRightText.png"
+          alt="律狮来了"
+        />
+      </div>
+      <!-- <ul class="layoutNav">
         <li @click="layoutNavClick(1)">
           <p>首页</p>
         </li>
@@ -16,11 +31,17 @@
           <p>新闻中心</p>
         </li>
         <li @click="layoutNavClick(5)">
-          <p>关于我们</p>
+          <p>
+            关于我们
+            <span>400-900-8255</span>
+          </p>
         </li>
-      </ul>
+        <li @click="layoutNavClick(6)">
+          <p>虎之队登录</p>
+        </li>
+      </ul>-->
       <div class="layoutLoginBox">
-        <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
+        <!-- <div class="layoutLoginTip" @mouseenter="userTipMoveEnter" @mouseleave="userTipMoveLeave">
           <img src="img/layout/铃铛.png" alt="消息通知" />
           <div v-show="isRed" class="redBall"></div>
           <div v-show="userTipMove && isLogin" class="tipList">
@@ -37,9 +58,10 @@
               <p>查看全部咨询 ></p>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="layoutLoginBlock" @mouseenter="userImgMoveEnter" @mouseleave="userImgMoveLeave">
-          <p v-if="!isLogin" @click="toLogin">登录</p>
+          <p v-if="!isLogin" @click="toLogin(1)">登录</p>
+          <p v-if="!isLogin" @click="toLogin(2)">注册</p>
           <img v-if="isLogin" :src="userImg" alt />
           <div v-show="userInfoMove && isLogin" class="infoList">
             <div class="userInfoLayout">
@@ -68,7 +90,7 @@
         </div>
       </div>
     </div>
-    <div class="layoutTopBlick"></div>
+    <!-- <div class="layoutTopBlick"></div> -->
     <router-view />
     <div class="layoutFooter">
       <div class="layoutFooterTop">
@@ -80,40 +102,61 @@
             <p class="layoutFooterTopListItemTit">关于我们</p>
             <p class="layoutFooterTopListItemCon" @click="toAboutItem(5)">了解我们</p>
             <p class="layoutFooterTopListItemCon" @click="toAboutItem(2)">加入我们</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(6)">联系我们</p>
           </div>
           <div class="layoutFooterTopListItem">
-            <p class="layoutFooterTopListItemTit">常见问题</p>
+            <p class="layoutFooterTopListItemTit">律师指南</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(8)">如何加盟</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(9)">市场合作</p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(10)">公益服务</p>
+          </div>
+          <div class="layoutFooterTopListItem">
+            <p class="layoutFooterTopListItemTit">用户指南</p>
             <p class="layoutFooterTopListItemCon" @click="toAboutItem(3)">新手帮助</p>
             <p class="layoutFooterTopListItemCon" @click="toAboutItem(4)">支付帮助</p>
-          </div>
-          <div class="layoutFooterTopListItem">
-            <p class="layoutFooterTopListItemTit">友情链接</p>
-            <p v-for="(item, i) in youqingList" :key="i" class="layoutFooterTopListItemCon">
-              <span @click="youqingLink(item.addres)">{{item.name}}</span>
-            </p>
+            <p class="layoutFooterTopListItemCon" @click="toAboutItem(7)">常见问题</p>
           </div>
         </div>
+        <div class="bottomQRCode">
+          <img src="img/layout/erweima.jpg" alt />
+          <div class="bottomQRCodeText">扫描二维码关注</div>
+          <div class="bottomQRCodeText">法虎小程序</div>
+        </div>
+        <div class="bottomRightContent">
+          <div class="bottomRightContentT">咨询热线</div>
+          <div class="bottomRightContentM">400-900-8255</div>
+          <div class="bottomRightContentB">周一至周日 8:00--22:00</div>
+        </div>
+      </div>
+      <div class="layoutFooterTopListItem">
+        <p class="layoutFooterTopListItemTit">友情链接</p>
+        <p v-for="(item, i) in youqingList" :key="i" class="layoutFooterTopListItemCon">
+          <span @click="youqingLink(item.addres)">{{item.name}}</span>
+        </p>
       </div>
       <div class="layoutFooterBot">
         <p>
-          <img src="img/layout/ghs.png" alt="国徽" />京公网安备 11010502035663号 备案网
+          北京律狮科技有限公司，备案号 京ICP备18043352号 | 备案网
           <a
             style="padding-left:5px;"
             target="_blank"
             href="http://www.beian.miit.gov.cn"
           >http://www.beian.miit.gov.cn</a>
         </p>
-        <p>北京律狮科技有限公司，备案号 京ICP备18043352号</p>
+        <p>
+          <img src="img/layout/ghs.png" alt="国徽" />京公网安备 11010502035663号
+        </p>
         <p>技术支持：北京律狮科技有限公司</p>
       </div>
+      <!-- <div style="width: 100%;height:40px;"></div> -->
     </div>
     <!-- rightFixed -->
-    <div class="layoutRightFix">
-      <div class="rightItem" @click="linkToOrder">
+    <div v-if="false" class="layoutRightFix">
+      <!-- <div class="rightItem" @click="linkToOrder">
         <img src="img/layout/订单.png" alt />
         <p>订单</p>
         <div class="hover1"></div>
-      </div>
+      </div>-->
       <div @mouseenter="rightFixedMove(1)" @mouseleave="rightFixedLeave" class="rightItem">
         <img src="img/layout/电话.png" alt />
         <p>
@@ -154,7 +197,7 @@
           <div class="noLoginTip" v-show="!isLogin && enterIndex == 3">用户未登录,请先登录</div>
         </div>
       </div>
-      <div @mouseenter="rightFixedMove(4)" @mouseleave="rightFixedLeave" class="rightItem">
+      <!-- <div @mouseenter="rightFixedMove(4)" @mouseleave="rightFixedLeave" class="rightItem">
         <img src="img/layout/二维码.png" alt />
         <p>小程序</p>
         <div v-show="enterIndex == 4" class="hover5">
@@ -165,10 +208,10 @@
             <p>轻松解疑</p>
           </div>
         </div>
-      </div>
-      <div class="toTop" @click="toTop">
+      </div>-->
+      <!-- <div class="toTop" @click="toTop">
         <img src="img/layout/回到顶部.png" alt />
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -182,6 +225,7 @@ export default {
   name: "defaut-layout",
   data() {
     return {
+      currentNav: 1,
       userTipMove: false,
       userInfoMove: false,
       isLogin: false,
@@ -191,15 +235,49 @@ export default {
       tipArr: [],
       isRed: false,
       enterIndex: null,
-      youqingList: []
+      youqingList: [],
+      isToTwo: false,
+      isToOne: false
     };
   },
   mounted() {
-    window.addEventListener("scroll", this.scrollToTop);
+    this.$refs.root.addEventListener("scroll", this.scrollToTop);
     this.queryLogin();
     this.queryHomeInfo();
   },
   methods: {
+    scrollToTop(e) {
+      if (e.target.scrollTop >= 0 && !this.isToTwo) {
+        this.isToTwo = true;
+        this.isToOne = true;
+        e.target.scrollTop = 1;
+        let timer = setInterval(() => {
+          e.target.scrollTop += 10;
+          if (e.target.scrollTop >= 937) clearInterval(timer);
+        }, 1);
+        // setTimeout(() => {
+        //   clearInterval(timer);
+        // }, 1000);
+      }
+      if (
+        e.target.scrollTop <= 937 &&
+        e.target.scrollTop != 0 &&
+        !this.isToOne
+      ) {
+        this.isToTwo = true;
+        this.isToOne = true;
+        e.target.scrollTop = 927;
+        let timer = setInterval(() => {
+          e.target.scrollTop -= 10;
+          if (e.target.scrollTop < 20) {
+            e.target.scrollTop = 0;
+            clearInterval(timer);
+          }
+        }, 1);
+      }
+      if (e.target.scrollTop == 0) this.isToTwo = false;
+      if (e.target.scrollTop >= 937) this.isToOne = false;
+    },
     youqingLink(l) {
       window.open(l, "top");
     },
@@ -316,6 +394,7 @@ export default {
       document.documentElement.scrollTop = 0;
     },
     layoutNavClick(i) {
+      this.currentNav = i;
       if (i == 1) {
         document.documentElement.scrollTop = 0;
         this.$router.push({
@@ -348,6 +427,8 @@ export default {
         this.$router.push({
           path: "/about"
         });
+      } else if (i == 6) {
+        window.open("http://lawyeradmin.lvshilaile.com/");
       }
     },
     toAboutItem(t) {
@@ -387,10 +468,13 @@ export default {
         path: "/myInfo"
       });
     },
-    toLogin() {
+    toLogin(i) {
       document.documentElement.scrollTop = 0;
       this.$router.push({
-        path: "/login"
+        path: "/login",
+        query: {
+          type: i
+        }
       });
     },
     linkToOrder() {
@@ -431,7 +515,28 @@ export default {
 </script>
 <style scoped>
 .defaut-layout {
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  position: relative;
+}
+.defaut-layout::-webkit-scrollbar {
+  width: 6px;
+  background-color: #ffffff10 !important;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.defaut-layout::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f502;
+}
+
+/*定义滑块 内阴影+圆角*/
+.defaut-layout::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
 }
 /* ---------------------- Nav ------------------- */
 .redBall {
@@ -444,36 +549,43 @@ export default {
   left: 48px;
 }
 .layoutTitle {
-  width: 100vw;
-  height: 60px;
-  position: fixed;
+  width: 100%;
+  height: 70px;
+  position: absolute;
   top: 0;
   left: 0;
-  background-color: #2971de;
+  background-color: #2971de00;
   color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   z-index: 1000;
 }
 /* logo */
+.layoutLogoBox {
+  width: 360px;
+  height: 70px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 .layoutLogo {
   /* width: 123px; */
-  height: 50px;
+  height: 62px;
   margin-left: 50px;
   cursor: pointer;
 }
 /* topNav */
 .layoutNav {
-  height: 60px;
+  height: 70px;
   display: flex;
   align-items: center;
   font-size: 14px;
 }
 .layoutNav > li {
   width: 100px;
-  height: 60px;
-  line-height: 60px;
+  height: 70px;
+  line-height: 70px;
   text-align: center;
   transition: 0.3s;
   cursor: pointer;
@@ -482,13 +594,19 @@ export default {
   background-color: #4e88df;
   transition: 0.3s;
 }
+.layoutNav > li:nth-child(5) {
+  width: 180px;
+}
+.layoutNav > li:nth-child(5) span {
+  font-size: 11px !important;
+}
 .layoutNavAction {
   background-color: #4e88df;
   transition: 0.3s;
 }
 /* topRight */
 .layoutLoginBox {
-  width: 175px;
+  width: 180px;
   margin-right: 51px;
   display: flex;
   align-items: center;
@@ -496,7 +614,7 @@ export default {
 /* topTip */
 .layoutLoginTip {
   width: 68px;
-  height: 60px;
+  height: 70px;
   padding-left: 50px;
   box-sizing: border-box;
   margin-right: 23px;
@@ -523,7 +641,7 @@ export default {
 }
 .tipListItem {
   width: 240px;
-  height: 60px;
+  height: 70px;
   box-sizing: border-box;
   /* margin-bottom: 20px; */
   border-bottom: 1px solid #eeeeee;
@@ -562,16 +680,21 @@ export default {
 }
 /* topLogin */
 .layoutLoginBlock {
-  font-size: 14px;
-  height: 60px;
-  width: 28px;
+  font-size: 16px;
+  height: 40px;
+  width: 180px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   position: relative;
 }
 .layoutLoginBlock > p {
   cursor: pointer;
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 20px;
+  border: 1px solid white;
 }
 .layoutLoginBlock > img {
   cursor: pointer;
@@ -646,31 +769,33 @@ export default {
 /* ----------------------------------- Footer ---------------------------- */
 .layoutFooter {
   width: 1200px;
-  height: 365px;
+  /* height: 335px; */
   margin: 0 auto 41px;
 }
 .layoutFooterTop {
   width: 100%;
-  height: 235px;
+  height: 276px;
   box-sizing: border-box;
   border-bottom: 2px solid #e1e3e6;
   display: flex;
+  justify-content: flex-start;
 }
 .layoutFooterTopLogo {
-  width: 40%;
-  height: 235px;
+  width: 140px;
+  height: 219px;
   text-align: center;
   cursor: pointer;
+  margin: 0 80px;
 }
 .layoutFooterTopLogo > img {
-  /* width: 336px; */
-  height: 150px;
+  width: 100%;
 }
 .layoutFooterTopList {
-  width: 60%;
+  width: 370px;
   height: 235px;
-  padding: 0 2px;
+  padding: 30px 2px 0;
   box-sizing: border-box;
+  margin-right: 60px;
   /* display: flex; */
   /* justify-content: space-between; */
   /* justify-content: flex-start; */
@@ -693,15 +818,43 @@ export default {
 .layoutFooterTopListItemCon {
   font-size: 14px;
   cursor: pointer;
-  margin-left: 20px;
+  margin-left: 40px;
   white-space: nowrap;
+}
+.bottomQRCode {
+  width: 160px;
+  height: 160px;
+  margin-right: 45px;
+}
+.bottomQRCode img {
+  width: 160px;
+  height: 160px;
+}
+.bottomQRCodeText {
+  text-align: center;
+  line-height: 28px;
+}
+.bottomRightContent {
+  padding-top: 48px;
+  text-align: left;
+  width: 200px;
+}
+.bottomRightContentT {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.bottomRightContentM {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+.bottomRightContentB {
 }
 /* .layoutFooterTopListItemCon:nth-child(10) {
   margin-left: 83px;
 } */
 .layoutFooterBot {
   font-size: 14px;
-  margin-top: 49px;
+  margin-top: 20px;
   line-height: 24px;
 }
 .layoutFooterBot > p {
@@ -709,14 +862,21 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.layoutFooterBot img {
+  margin-right: 5px;
+}
+.layoutFooterBot a {
+  color: #263238;
+  text-decoration: underline;
+}
 
 /* RightFix */
 .layoutRightFix {
   position: fixed;
   right: 0px;
-  top: 60px;
+  top: 510px;
   width: 70px;
-  height: 700px;
+  height: 360px;
   background-color: white;
   z-index: 1000;
   box-shadow: 0px 5px 10px 0px rgba(41, 113, 222, 0.1);
@@ -728,22 +888,23 @@ export default {
   height: 120px;
   border-bottom: 1px solid #e1e3e6;
   color: #788084;
-  padding: 20px 0;
+  padding: 0;
   box-sizing: border-box;
   text-align: center;
   cursor: pointer;
   position: relative;
 }
 .rightItem:nth-child(1) {
-  height: 100px;
-  padding-top: 30px !important;
+  height: 120px;
+  padding-top: 20px !important;
 }
-.rightItem:nth-child(5) {
-  height: 110px;
-  padding-top: 30px !important;
+.rightItem:nth-child(2) {
+  height: 120px;
+  padding-top: 20px !important;
 }
 .rightItem:last-child {
   border: 0;
+  padding-top: 20px !important;
 }
 .rightItem > img {
   width: 30px;

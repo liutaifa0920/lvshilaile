@@ -343,6 +343,12 @@ export default {
       console.log(localStorage.getItem("rememberPsw"));
       this.rememberPsw = true;
     }
+    console.log(this.$route.query.type);
+    if (this.$route.query.type == 1) {
+      this.currentIsLogin = true;
+    } else {
+      this.currentIsLogin = false;
+    }
     this.isLoginFun();
     this.setWxerwma();
   },

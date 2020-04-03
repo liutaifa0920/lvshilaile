@@ -35,7 +35,7 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
-            为了更好的答复您, 请将相关材料拖到此处，或
+            为了更好的答复您<br>请将相关材料拖到此处，或
             <em>点击上传</em>
           </div>
         </el-upload>

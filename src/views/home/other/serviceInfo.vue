@@ -133,6 +133,7 @@ export default {
     };
   },
   mounted() {
+    document.documentElement.scrollTop = 0;
     if (localStorage.getItem("isLogin") == 1) {
       this.isLogin = true;
     }

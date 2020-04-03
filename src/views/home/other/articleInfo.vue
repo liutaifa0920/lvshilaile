@@ -76,6 +76,7 @@ export default {
         console.log(res);
         if (res.code == 200) {
           this.infoList = res.data;
+          document.documentElement.scrollTop = 0;
         }
       });
     },
